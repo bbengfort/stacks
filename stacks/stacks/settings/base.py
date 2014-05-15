@@ -87,6 +87,7 @@ WSGI_APPLICATION = 'stacks.wsgi.application'
 
 ## Application Definition
 INSTALLED_APPS   = (
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -151,3 +152,9 @@ EMAIL_HOST      = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'server@bengfort.com'
 EMAIL_HOST_PASSWORD = environ_setting("EMAIL_HOST_PASSWORD")
 EMAIL_PORT      = 587
+
+##########################################################################
+## Grappelli Configuration
+##########################################################################
+
+GRAPPELLI_ADMIN_TITLE = "Bengfort Stacks Admin"
