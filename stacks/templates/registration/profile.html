@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block body %}
+
+  {% include 'navbar.html' %}
+
+  <div id="content" class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <img class="img-responsive img-thumbnail" src="{{ gravatar }}" alt="Gravatar" />
+      </div>
+      <div class="col-md-9">
+        <h1>{{ profile.get_full_name }}</h1>
+      </div>
+    </div>
+
+
+  <div id="footer">
+    <p class="text-muted text-center"><small>Copyright &copy; 2014 Cobrain Company</small></p>
+  </div>
+
+{% endblock %}

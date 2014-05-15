@@ -94,6 +94,11 @@ INSTALLED_APPS   = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third party apps
+    'social.apps.django_app.default',
+
+    # Stacks Apps
     'books',
 )
 
@@ -138,6 +143,19 @@ TEMPLATE_DIRS       = (
 ## Uploaded Media
 MEDIA_URL           = "/media/"
 
+## Additional template context
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+    "social.apps.django_app.context_processors.backends",
+    "social.apps.django_app.context_processors.login_redirect",
+)
+
 ##########################################################################
 ## Logging and Error Reporting
 ##########################################################################
@@ -152,6 +170,29 @@ EMAIL_HOST      = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'server@bengfort.com'
 EMAIL_HOST_PASSWORD = environ_setting("EMAIL_HOST_PASSWORD")
 EMAIL_PORT      = 587
+
+##########################################################################
+## Social Authentication
+##########################################################################
+
+## Support for Social Auth authentication backends
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+## Social authentication strategy
+SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
+SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
+
+## Google-specific authentication keys
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = environ_setting("GOOGLE_OAUTH2_CLIENT_ID", "")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = environ_setting("GOOGLE_OAUTH2_CLIENT_SECRET", "")
+
+## Login URLs and Redirects
+LOGIN_URL  = 'auth_login'
+LOGOUT_URL = 'auth_logout'
+LOGIN_REDIRECT_URL = "/"
 
 ##########################################################################
 ## Grappelli Configuration
