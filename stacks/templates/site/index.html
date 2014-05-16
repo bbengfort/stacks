@@ -1,1 +1,9 @@
 {% extends 'page.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+      {% include 'site/stacks.html' %}
+    {% else %}
+      {% include 'site/splash.html' %}
+    {% endif %}
+{% endblock %}
