@@ -100,6 +100,7 @@ INSTALLED_APPS   = (
 
     # Stacks Apps
     'books',
+    'member',
 )
 
 ## Request Handling
