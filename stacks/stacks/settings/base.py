@@ -98,6 +98,7 @@ INSTALLED_APPS   = (
     # Third party apps
     'taggit',
     'social.apps.django_app.default',
+    'rest_framework',
 
     # Stacks Apps
     'books',
@@ -204,3 +205,27 @@ LOGIN_REDIRECT_URL = "/"
 ##########################################################################
 
 GRAPPELLI_ADMIN_TITLE = "Bengfort Stacks Admin"
+
+##########################################################################
+## REST Framework
+##########################################################################
+
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ),
+
+    # Use hyperlinked styles by default.
+    # Only used if the `serializer_class` attribute is not set on a view.
+    'DEFAULT_MODEL_SERIALIZER_CLASS':
+    'rest_framework.serializers.ModelSerializer',
+
+    # Use Django's standard `django.contrib.auth` permissions
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ],
+
+    'PAGINATE_BY': 50,
+}

@@ -35,5 +35,4 @@ ALLOWED_HOSTS    = ('127.0.0.1', 'localhost')
 SECRET_KEY = 'ag05z*%5)$+wccf@anpqe+u@7-^b#%=&9gezq64*ox2d#7v&&r'
 
 ## Content
-STATIC_ROOT      = os.path.join(PROJECT_DIR, 'static')
 MEDIA_ROOT       = os.path.join(PROJECT_DIR, 'media')
