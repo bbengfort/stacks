@@ -158,6 +158,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "social.apps.django_app.context_processors.login_redirect",
 )
 
+## Set default file storage handler to hash the names
+DEFAULT_FILE_STORAGE = 'django_hashedfilenamestorage.storage.HashedFilenameFileSystemStorage'
+
 ##########################################################################
 ## Logging and Error Reporting
 ##########################################################################

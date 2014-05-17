@@ -21,8 +21,8 @@ from django.db import models
 from model_utils import Choices
 from stacks.utils import nullable
 from autoslug import AutoSlugField
-from stacks.utils import upload_path
 from taggit.managers import TaggableManager
+from stacks.utils import upload_path, filehash
 from model_utils.models import TimeStampedModel
 
 ##########################################################################
@@ -36,7 +36,7 @@ class Book(TimeStampedModel):
     the book is the canonical representation of some literature.
     """
 
-    isbn         = models.CharField( max_length=13, unique=True )
+    isbn         = models.CharField( max_length=13, **nullable )
     title        = models.CharField( max_length=255 )
     slug         = AutoSlugField( populate_from='title', unique_with='pubdate__year' )
     pubdate      = models.DateField( **nullable )
@@ -123,6 +123,8 @@ class Review(TimeStampedModel):
 class BookMedia(TimeStampedModel):
     """
     Contains information about a stored file for a particular book.
+
+    TODO: Compute the MD5 hash of the temporary upload on upload.
     """
 
     TYPES        = Choices(('pdf', 'PDF'), ('epub', 'ePub'), ('mobi', 'Mobi'),
@@ -130,9 +132,15 @@ class BookMedia(TimeStampedModel):
 
     book         = models.ForeignKey( 'books.Book', related_name='media' )
     uploader     = models.ForeignKey( 'auth.User', related_name='uploads' )
-    content      = models.FileField( max_length=255, upload_to=upload_path('uploads', 'signature') )
+    content      = models.FileField( max_length=255, upload_to='uploads' )
     content_type = models.CharField( max_length=5, choices=TYPES )
-    signature    = models.CharField( max_length=32, **nullable )
+    signature    = models.CharField( max_length=64, **nullable )
+
+    def save(self, *args, **kwargs):
+        self.signature = filehash(self.content)
+        super(BookMedia, self).save(*args, **kwargs)
 
     class Meta:
         db_table = "book_media"
+        verbose_name = "book media"
+        verbose_name_plural = "book media"

@@ -18,8 +18,7 @@ Helper code for the Stacks package
 ##########################################################################
 
 import os
-
-from uuid import uuid4
+import hashlib
 
 ##########################################################################
 ## Utilities
@@ -34,8 +33,14 @@ def upload_path(path, field='slug'):
         name = getattr(instance, field, None)
 
         if not name:
-            name = uuid4().hex
+            name = base
 
-        filename = '{}.{}'.format(name, ext)
-        return os.path.join(path, filename)
+        name += ext
+        return os.path.join(path, name)
     return wrapper
+
+def filehash(fp, algorithm='sha1'):
+    stream = getattr(hashlib, algorithm)()
+    for chunk in fp.chunks():
+        stream.update(chunk)
+    return stream.hexdigest()
