@@ -96,6 +96,7 @@ INSTALLED_APPS   = (
     'django.contrib.staticfiles',
 
     # Third party apps
+    'taggit',
     'social.apps.django_app.default',
 
     # Stacks Apps
