@@ -27,7 +27,7 @@ body {
     border-top: 1px solid #eee;
     height: 76px;
     padding: 30px 15px;
-    font-size: 16px
+    font-size: 16px;
     font-family: 'Open Sans Condensed' sans-serif;
 }
 
@@ -50,4 +50,22 @@ body {
     height: 32px;
     margin: -4px 10px 0px 0px;
     float: left;
+}
+
+/* Specific Styles */
+
+#splash-box {
+  min-height: 400px;
+  background-color: #4f5d73;
+  margin-top: 50px;
+  color: #FEFEFE;
+  text-align: center;
+}
+
+.book-grid {
+  text-align: center;
+}
+
+.book-grid img {
+  margin: 8px auto;
 }
