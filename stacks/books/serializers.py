@@ -20,6 +20,8 @@ Serializers for the REST Framework
 from books.models import *
 from rest_framework import serializers
 from rest_framework.compat import smart_text
+from stacks.utils.fields import AbsoluteFileField
+from stacks.utils.fields import AbsoluteImageField
 
 ##########################################################################
 ## Serializers
@@ -31,7 +33,8 @@ class AuthorSerializer(serializers.ModelSerializer):
     """
 
     class Meta:
-        model = Author
+        model  = Author
+        fields = ('id', 'name', 'about')
 
 class PublisherSerializer(serializers.ModelSerializer):
     """
@@ -39,7 +42,32 @@ class PublisherSerializer(serializers.ModelSerializer):
     """
 
     class Meta:
-        model = Publisher
+        model  = Publisher
+        fields = ('id', 'name', 'location')
+
+class BookMediaSerializer(serializers.ModelSerializer):
+    """
+    Serializes the BookMedia including file meta data and other important
+    download data for a piece of media for a book.
+    """
+
+    book       = serializers.RelatedField(many=False)
+    uploader   = serializers.RelatedField(many=False)
+    content    = AbsoluteFileField()
+
+    class Meta:
+        model  = BookMedia
+        fields = ('id','book', 'uploader', 'content', 'content_type', 'signature')
+
+class SimpleBookMediaSerializer(BookMediaSerializer):
+    """
+    Serializes the BookMedia with a limited amount of meta data required
+    only for nesting the serialization on the Book object.
+    """
+
+    class Meta:
+        model  = BookMedia
+        fields = ('id', 'content', 'content_type', 'signature')
 
 class BookSerializer(serializers.ModelSerializer):
     """
@@ -49,22 +77,15 @@ class BookSerializer(serializers.ModelSerializer):
     and media) and provides the interface for POST data of books.
     """
 
-    authors   = serializers.RelatedField(many=True)
-    publisher = serializers.RelatedField(many=False)
+    authors    = AuthorSerializer(many=True)
+    publisher  = PublisherSerializer(many=False)
+    media      = SimpleBookMediaSerializer(many=True)
+    cover      = AbsoluteImageField()
 
     class Meta:
         model  = Book
         fields = ('id', 'title', 'pubdate', 'pages', 'description',
-                  'cover', 'authors', 'publisher')
-
-class BookMediaSerializer(serializers.ModelSerializer):
-    """
-    Serializes the BookMedia including file meta data and other important
-    download data for a piece of media for a book.
-    """
-
-    class Meta:
-        model  = BookMedia
+                  'cover', 'authors', 'publisher', 'media')
 
 class ReviewSerializer(serializers.ModelSerializer):
     """
