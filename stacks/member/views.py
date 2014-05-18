@@ -20,9 +20,14 @@ Views for member and contributor management
 import urllib
 import hashlib
 
-
-from .mixins import LoginRequired
+from member.mixins import LoginRequired
+from django.contrib.auth.models import User
 from django.views.generic import TemplateView
+
+from member.serializers import *
+from rest_framework import viewsets
+from rest_framework import status
+from rest_framework.response import Response
 
 ##########################################################################
 ## Views
@@ -54,3 +59,12 @@ class ProfileView(LoginRequired, TemplateView):
         context['profile']  = self.request.user
         context['gravatar'] = self.get_gravatar_url(self.request.user.email)
         return context
+
+##########################################################################
+## API HTTP/JSON Views
+##########################################################################
+
+class MemberViewSet(viewsets.ModelViewSet):
+
+    queryset = User.objects.all()
+    serializer_class = MemberSerializer

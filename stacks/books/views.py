@@ -20,14 +20,24 @@ Views for the Book app including REST viewsets and HTML views.
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
-from member.mixins import LoginRequired
+
 from books.models import *
 from books.serializers import *
-from django.contrib.auth.models import *
+from member.mixins import LoginRequired
 
 ##########################################################################
 ## API HTTP/JSON Views
 ##########################################################################
+
+class AuthorViewSet(viewsets.ModelViewSet):
+
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+class PublisherViewSet(viewsets.ModelViewSet):
+
+    queryset = Publisher.objects.all()
+    serializer_class = PublisherSerializer
 
 class BookViewSet(viewsets.ModelViewSet):
 

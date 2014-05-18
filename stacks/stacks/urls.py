@@ -19,10 +19,11 @@ The main URL router for the app
 
 from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
-from member.views import ProfileView
 from rest_framework import routers
 from django.contrib import admin
+
 from books.views import *
+from member.views import *
 
 ##########################################################################
 ## Automatic Discovery of Endpoints
@@ -34,8 +35,11 @@ admin.autodiscover()
 ## API
 router = routers.DefaultRouter()
 router.register(r'books', BookViewSet)
+router.register(r'authors', AuthorViewSet)
+router.register(r'publishers', PublisherViewSet)
 router.register(r'reviews', ReviewViewSet)
 router.register(r'media', BookMediaViewSet)
+router.register(r'members', MemberViewSet)
 
 ##########################################################################
 ## The URL Patterns for the app
