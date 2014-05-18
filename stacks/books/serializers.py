@@ -32,6 +32,14 @@ class AuthorSerializer(serializers.ModelSerializer):
     Serializes an Author object for use in the API.
     """
 
+    def transform_about(self, obj, value):
+        """
+        Access the MarkupField rendering of the value.
+        """
+        if hasattr(obj, 'about'):
+            return unicode(obj.about)
+        return value
+
     class Meta:
         model  = Author
         fields = ('id', 'name', 'about')
@@ -81,16 +89,33 @@ class BookSerializer(serializers.ModelSerializer):
     publisher  = PublisherSerializer(many=False)
     media      = SimpleBookMediaSerializer(many=True)
     cover      = AbsoluteImageField()
+    tags       = serializers.RelatedField(many=True)
+
+    def transform_description(self, obj, value):
+        """
+        Access the MarkupField rendering of the value.
+        """
+        if hasattr(obj, 'description'):
+            return unicode(obj.description)
+        return value
 
     class Meta:
         model  = Book
         fields = ('id', 'title', 'pubdate', 'pages', 'description',
-                  'cover', 'authors', 'publisher', 'media')
+                  'cover', 'authors', 'publisher', 'media', 'tags')
 
 class ReviewSerializer(serializers.ModelSerializer):
     """
     Obligatory serializer for the Review object in the API.
     """
+
+    def transform_review(self, obj, value):
+        """
+        Access the MarkupField rendering of the value.
+        """
+        if hasattr(obj, 'review'):
+            return unicode(obj.review)
+        return value
 
     class Meta:
         model  = Review

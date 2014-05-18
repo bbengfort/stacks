@@ -24,6 +24,7 @@ from autoslug import AutoSlugField
 from taggit.managers import TaggableManager
 from stacks.utils import upload_path, filehash
 from model_utils.models import TimeStampedModel
+from markupfield.fields import MarkupField
 
 ##########################################################################
 ## Models for Book Information
@@ -42,7 +43,7 @@ class Book(TimeStampedModel):
     pubdate      = models.DateField( **nullable )
     language     = models.CharField( max_length=5, default="en", null=True)
     pages        = models.PositiveSmallIntegerField( **nullable )
-    description  = models.TextField( **nullable )
+    description  = MarkupField( markup_type='markdown', **nullable )
     cover        = models.ImageField( max_length=255, upload_to=upload_path('covers', 'isbn'), **nullable )
     publisher    = models.ForeignKey( "books.Publisher", related_name="books" )
     authors      = models.ManyToManyField( "books.Author", related_name="books" )
@@ -82,7 +83,7 @@ class Author(TimeStampedModel):
     """
 
     name         = models.CharField( max_length=255 )
-    about        = models.TextField( **nullable )
+    about        = MarkupField( markup_type='markdown', **nullable )
     slug         = AutoSlugField( populate_from='name', unique=True, editable=True )
 
     def __unicode__(self):
@@ -107,7 +108,7 @@ class Review(TimeStampedModel):
     user         = models.ForeignKey( 'auth.User', related_name='reviews' )
     book         = models.ForeignKey( 'books.Book', related_name='reviews' )
     rating       = models.PositiveSmallIntegerField( default=0, null=False, blank=True, choices=RATING )
-    review       = models.TextField( **nullable )
+    review       = MarkupField( markup_type='markdown', **nullable )
     date_read    = models.DateField( **nullable )
 
     class Meta:
