@@ -54,7 +54,7 @@ urlpatterns = patterns('',
     url(r'^api/', include(router.urls)),
 
     # Static Pages
-    url(r'^$', TemplateView.as_view(template_name='site/index.html'), name='home'),
+    url(r'^$', BookList.as_view(template_name='site/index.html'), name='home'),
     url(r'^terms/$', TemplateView.as_view(template_name='site/legal/terms.html'), name='terms'),
     url(r'^privacy/$', TemplateView.as_view(template_name='site/legal/privacy.html'), name='privacy'),
 

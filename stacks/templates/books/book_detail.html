@@ -76,6 +76,15 @@
             {% endif %}
           </dl>
 
+          {% if book.media.all %}
+          <p><strong>Media belongs to:</strong></p>
+          <ul class="list-unstyled">
+            {% for user in book.uploaders %}
+            <li>{{ user.get_full_name }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+
         </div>
       </div>
     </div>

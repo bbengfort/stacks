@@ -3,65 +3,25 @@
 
     <div class="container book-grid">
       <div class="row">
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-      </div>
+        {% for book in book_list %}
 
-      <div class="row">
         <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
+          {% if book.cover %}
+          <a href="{{ book.get_absolute_url }}"><img class="img-responsive" src="{{ book.cover.url }}" /></a>
+          {% else %}
+          <a href="{{ book.get_absolute_url }}"><img class="img-responsive" src="{% static 'img/nocover.jpg' %}" /></a>
+          {% endif %}
         </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-      </div>
 
+        {% if forloop.counter|divisibleby:6 %}
+      </div>
       <div class="row">
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
+        {% endif %}
+
+        {% empty %}
+        <div class="col-md-12">
+          <p class="lead text-center">The Stacks are empty! Time to call the Librarian!</p>
         </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
-        <div class="col-sm-2">
-          <img class="img-responsive" src="{% static 'img/nocover.jpg' %}" />
-        </div>
+        {% endfor %}
       </div>
     </div>

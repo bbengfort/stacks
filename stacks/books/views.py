@@ -60,6 +60,10 @@ class BookMediaViewSet(viewsets.ModelViewSet):
 ## Normal HTTP Views for Browser
 ##########################################################################
 
+class BookList(ListView):
+
+    model = Book
+
 class BookDetail(LoginRequired, DetailView):
 
     model = Book

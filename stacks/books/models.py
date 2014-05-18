@@ -54,6 +54,15 @@ class Book(TimeStampedModel):
     ## Taggit tags for extra meta ##
     tags         = TaggableManager()
 
+    def uploaders(self):
+        """
+        Returns a distinct list of anyone that has uploaded media for this
+        book or periodical, allowing validation of the owners of the media.
+        """
+        field_name = 'uploader'
+        for item in self.media.distinct(field_name):
+            yield getattr(item, field_name)
+
     @models.permalink
     def get_absolute_url(self):
         """
@@ -94,7 +103,7 @@ class Author(TimeStampedModel):
     GENDER       = Choices(('M', 'Male'), ('F', 'Female'), ('O', 'Other'), ('?', 'Unknown'))
 
     name         = models.CharField( max_length=255 )
-    slug         = AutoSlugField( populate_from='name', unique=True, editable=True )
+    slug         = AutoSlugField( populate_from='name', unique=True, editable=True, blank=True )
     headshot     = models.ImageField( max_length=255, upload_to=upload_path('authors', 'slug'), **nullable )
     about        = MarkupField( markup_type='markdown', **nullable )
     website      = models.URLField( **nullable )
