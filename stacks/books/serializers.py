@@ -22,6 +22,7 @@ from rest_framework import serializers
 from rest_framework.compat import smart_text
 from stacks.utils.fields import AbsoluteFileField
 from stacks.utils.fields import AbsoluteImageField
+from stacks.utils.fields import MarkdownField
 
 ##########################################################################
 ## Serializers
@@ -32,13 +33,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     Serializes an Author object for use in the API.
     """
 
-    def transform_about(self, obj, value):
-        """
-        Access the MarkupField rendering of the value.
-        """
-        if hasattr(obj, 'about'):
-            return unicode(obj.about)
-        return value
+    about      = MarkdownField()
 
     class Meta:
         model  = Author
@@ -85,37 +80,24 @@ class BookSerializer(serializers.ModelSerializer):
     and media) and provides the interface for POST data of books.
     """
 
-    authors    = AuthorSerializer(many=True)
-    publisher  = PublisherSerializer(many=False)
-    media      = SimpleBookMediaSerializer(many=True)
-    cover      = AbsoluteImageField()
-    tags       = serializers.RelatedField(many=True)
-
-    def transform_description(self, obj, value):
-        """
-        Access the MarkupField rendering of the value.
-        """
-        if hasattr(obj, 'description'):
-            return unicode(obj.description)
-        return value
+    authors     = AuthorSerializer(many=True)
+    publisher   = PublisherSerializer(many=False)
+    media       = SimpleBookMediaSerializer(many=True)
+    cover       = AbsoluteImageField()
+    tags        = serializers.RelatedField(many=True)
+    description = MarkdownField()
 
     class Meta:
-        model  = Book
-        fields = ('id', 'title', 'pubdate', 'pages', 'description',
-                  'cover', 'authors', 'publisher', 'media', 'tags')
+        model   = Book
+        fields  = ('id', 'title', 'pubdate', 'pages', 'description',
+                   'cover', 'authors', 'publisher', 'media', 'tags')
 
 class ReviewSerializer(serializers.ModelSerializer):
     """
     Obligatory serializer for the Review object in the API.
     """
 
-    def transform_review(self, obj, value):
-        """
-        Access the MarkupField rendering of the value.
-        """
-        if hasattr(obj, 'review'):
-            return unicode(obj.review)
-        return value
+    review     = MarkdownField()
 
     class Meta:
         model  = Review

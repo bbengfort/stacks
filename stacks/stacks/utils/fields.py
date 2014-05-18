@@ -38,3 +38,12 @@ class AbsoluteImageField(serializers.ImageField):
         if request:
             return request.build_absolute_uri(value.url)
         return value.url
+
+##########################################################################
+## Markdown Field
+##########################################################################
+
+class MarkdownField(serializers.WritableField):
+
+    def to_native(self, obj):
+        return unicode(obj)

@@ -1,0 +1,82 @@
+    {% extends 'page.html' %}
+    {% load staticfiles %}
+
+    {% block content %}
+    <div class="container book-detail">
+      <div class="row">
+        <div class="col-md-3">
+          {% if book.cover %}
+            <img class="img-responsive" alt="{{ book.title }}" src="{{ book.cover.url }}" />
+          {% else %}
+            <img class="img-responsive" alt="{{ book.title }}" src="{% static 'img/nocover.jpg' %}" />
+          {% endif %}
+        </div>
+        <div class="col-md-9">
+          <h1 class="book-title">{{ book.title }}</h1>
+          <p class="book-byline">by
+            {% for author in book.authors.all %}
+            <a href="{{ author.get_absolute_url }}">{{ author }}</a>{% if not forloop.last %}, {% endif %}
+            {% empty %}
+            Anonymous
+            {% endfor %}
+          </p>
+
+          {% if book.description.raw %}
+          {{ book.description }}
+          {% else %}
+          <p>No description yet, please add one!</p>
+          {% endif %}
+
+          <hr /><!-- Book Detail Divider -->
+
+          <p class="book-formats">
+            {% if book.pages %}
+            {{ book.pages }} pages
+            {% endif %}
+            {% if book.media.all %}
+            available in
+            {% for media in book.media.all %}
+            <a href="{{ media.content.url }}">{{ media.get_content_type_display }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+            {% else %}
+            but no copies added.
+            {% endif %}
+          </p>
+
+          {% if book.pubdate and book.publisher %}
+          <p class="book-published">Published {{ book.pubdate|date:"F d, Y" }} by {{ book.publisher }}</p>
+          {% elif book.pubdate %}
+          <p class="book-published">Published {{ book.pubdate|date:"F d, Y" }}</p>
+          {% elif book.publisher %}
+          <p class="book-published">Published by {{ book.publisher }}</p>
+          {% else %}
+          <p class="book-published">Unknown Publication Details</p>
+          {% endif %}
+
+          <dl class="dl-horizontal">
+            {% if book.isbn %}
+              <dt>ISBN</dt>
+                <dd>{{ book.isbn }}</dd>
+            {% endif %}
+            {% if book.language %}
+              <dt>Language</dt>
+                <dd>{{ book.get_language_display }}</dd>
+            {% endif %}
+            {% if book.pages %}
+              <dt>Pages</dt>
+                <dd>{{ book.pages }}</dd>
+            {% endif %}
+            {% if book.pubdate %}
+              <dt>Published</dt>
+                <dd>{{ book.pubdate }}</dd>
+            {% endif %}
+            {% if book.tags.all %}
+              <dt>Tags</dt>
+                <dd>{{ book.tags.all|join:", " }}
+            {% endif %}
+          </dl>
+
+        </div>
+      </div>
+    </div>
+    {% endblock %}

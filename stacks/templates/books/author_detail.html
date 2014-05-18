@@ -1,0 +1,49 @@
+{% extends 'page.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container author-detail">
+  <div class="row">
+    <div class="col-md-3">
+      {% if author.headshot %}
+      <img alt="{{ author.name }}" src="{{ author.headshot.url }}" class="img-responsive" />
+      {% else %}
+      <img alt="{{ author.name }}" src="{% static 'img/noprofile.jpg' %}" class="img-responsive" />
+      {% endif %}
+    </div>
+    <div class="col-md-9">
+      <h1 class="author">{{ author.name }}</h1>
+
+      {% if author.about.raw %}
+      {{ author.about }}
+      {% else %}
+      <p>No about the author yet, please add one!</p>
+      {% endif %}
+
+      <hr /><!-- Author Detail Divider -->
+      <dl class="dl-horizontal">
+        {% if author.gender %}
+        <dt>Gender</dt>
+          <dd>{{ author.get_gender_display }}</dd>
+        {% endif %}
+        {% if author.website %}
+        <dt>Website</dt>
+          <dd><a href="{{ author.website }}">{{ author.website }}</a>
+        {% endif %}
+        {% if author.genre %}
+        <dt>Genre</dt>
+          <dd>{{ author.genre }}</dd>
+        {% endif %}
+        {% if author.born %}
+        <dt>Born</dt>
+          <dd>{{ author.born }}</dd>
+        {% endif %}
+        {% if author.died %}
+        <dt>Died</dt>
+          <dd>{{ author.died }}</dd>
+        {% endif %}
+      </dl>
+    </div>
+  </div>
+</div>
+{% endblock %}

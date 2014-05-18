@@ -66,6 +66,6 @@ body {
   text-align: center;
 }
 
-.book-grid img {
+.book-grid img, .book-detail img, .author-detail img {
   margin: 8px auto;
 }

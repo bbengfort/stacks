@@ -26,6 +26,8 @@ from stacks.utils import upload_path, filehash
 from model_utils.models import TimeStampedModel
 from markupfield.fields import MarkupField
 
+from django.conf.global_settings import LANGUAGES
+
 ##########################################################################
 ## Models for Book Information
 ##########################################################################
@@ -41,16 +43,23 @@ class Book(TimeStampedModel):
     title        = models.CharField( max_length=255 )
     slug         = AutoSlugField( populate_from='title', unique_with='pubdate__year' )
     pubdate      = models.DateField( **nullable )
-    language     = models.CharField( max_length=5, default="en", null=True)
+    language     = models.CharField( max_length=5, default="en", choices=LANGUAGES )
     pages        = models.PositiveSmallIntegerField( **nullable )
     description  = MarkupField( markup_type='markdown', **nullable )
-    cover        = models.ImageField( max_length=255, upload_to=upload_path('covers', 'isbn'), **nullable )
-    publisher    = models.ForeignKey( "books.Publisher", related_name="books" )
+    cover        = models.ImageField( max_length=255, upload_to=upload_path('covers', 'slug'), **nullable )
+    publisher    = models.ForeignKey( "books.Publisher", related_name="books", null=True, blank=True, default=None )
     authors      = models.ManyToManyField( "books.Author", related_name="books" )
     critics      = models.ManyToManyField( "auth.User", through="books.Review", related_name="books")
 
     ## Taggit tags for extra meta ##
     tags         = TaggableManager()
+
+    @models.permalink
+    def get_absolute_url(self):
+        """
+        Returns the Absolute URL (permalink) of the Book detail.
+        """
+        return ('books:book_detail', [self.slug])
 
     def __unicode__(self):
         return "%s (%s)" % (self.title, self.pubdate.strftime('%Y'))
@@ -82,9 +91,24 @@ class Author(TimeStampedModel):
     Holds Author information for quick author lookups.
     """
 
+    GENDER       = Choices(('M', 'Male'), ('F', 'Female'), ('O', 'Other'), ('?', 'Unknown'))
+
     name         = models.CharField( max_length=255 )
-    about        = MarkupField( markup_type='markdown', **nullable )
     slug         = AutoSlugField( populate_from='name', unique=True, editable=True )
+    headshot     = models.ImageField( max_length=255, upload_to=upload_path('authors', 'slug'), **nullable )
+    about        = MarkupField( markup_type='markdown', **nullable )
+    website      = models.URLField( **nullable )
+    gender       = models.CharField( max_length=1, choices=GENDER, null=True, blank=True, default=None )
+    born         = models.DateField( **nullable )
+    died         = models.DateField( **nullable )
+    genre        = models.TextField( **nullable )
+
+    @models.permalink
+    def get_absolute_url(self):
+        """
+        Returns the Absolute URL (permalink) of the Author detail.
+        """
+        return ('books:author_detail', [self.slug])
 
     def __unicode__(self):
         return self.name
@@ -140,6 +164,9 @@ class BookMedia(TimeStampedModel):
     def save(self, *args, **kwargs):
         self.signature = filehash(self.content)
         super(BookMedia, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return "%s.%s" % (self.book.slug, self.content_type)
 
     class Meta:
         db_table = "book_media"
