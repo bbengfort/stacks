@@ -5,6 +5,14 @@ been created on the server (allowing access to the admin).
 """
 
 # Imports
+import os
+import sys
+
+# Fix the path
+project = os.path.abspath(os.path.join(os.path.dirname(__file__), '../stacks/'))
+sys.path.append(project)
+
+# Import Django
 from django.contrib.auth.models import User
 
 # Main Statement
