@@ -66,6 +66,12 @@ body {
   text-align: center;
 }
 
-.book-grid img, .book-detail img, .author-detail img {
+.book-grid img {
+  max-height: 200px;
+}
+
+.book-grid img,
+.book-detail img,
+.author-detail img {
   margin: 8px auto;
 }
