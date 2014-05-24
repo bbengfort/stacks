@@ -33,3 +33,15 @@ ALLOWED_HOSTS    = ['stacks.bengfort.com',]
 ## Content
 STATIC_ROOT      = "/var/www/stacks/static/"
 MEDIA_ROOT       = "/var/www/stacks/media/"
+
+## Database Settings
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': environ_setting('RDS_DB_NAME'),
+        'USER': environ_setting('RDS_USERNAME'),
+        'PASSWORD': environ_setting('RDS_PASSWORD'),
+        'HOST': environ_setting('RDS_HOSTNAME'),
+        'PORT': environ_setting('RDS_PORT'),
+    }
+}
