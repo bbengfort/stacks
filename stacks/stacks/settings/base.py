@@ -64,7 +64,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': environ_setting('DB_NAME', 'stacks'),
         'USER': environ_setting('DB_USER', 'django'),
-        'PASSWORD': environ_setting('DB_PASS'),
+        'PASSWORD': environ_setting('DB_PASS', ''),
         'HOST': environ_setting('DB_HOST', 'localhost'),
         'PORT': environ_setting('DB_PORT', '5432'),
     },
