@@ -46,5 +46,4 @@ DATABASES = {
 }
 
 ## Static files in S3
-STATIC_ROOT         = os.path.join(PROJECT_DIR, 'static')
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
