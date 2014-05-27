@@ -17,6 +17,7 @@ Production environment specific settings
 ## Imports
 ##########################################################################
 
+import os
 from .base import *
 
 ##########################################################################
@@ -28,11 +29,9 @@ DEBUG            = False
 TEMPLATE_DEBUG   = False
 
 ## Hosts
-ALLOWED_HOSTS    = ['stacks.bengfort.com',]
-
-## Content
-STATIC_ROOT      = "/var/www/stacks/static/"
-MEDIA_ROOT       = "/var/www/stacks/media/"
+ALLOWED_HOSTS    = ['stacks.bengfort.com',
+                    'stacks-web-prod.elasticbeanstalk.com',
+                    'localhost', '127.0.0.1']
 
 ## Database Settings
 DATABASES = {
@@ -45,3 +44,7 @@ DATABASES = {
         'PORT': environ_setting('RDS_PORT'),
     }
 }
+
+## Static files in S3
+STATIC_ROOT         = os.path.join(PROJECT_DIR, 'static')
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'

@@ -160,7 +160,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 ## Set default file storage handler to hash the names
-DEFAULT_FILE_STORAGE = 'django_hashedfilenamestorage.storage.HashedFilenameFileSystemStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 ##########################################################################
 ## Logging and Error Reporting
@@ -229,3 +229,12 @@ REST_FRAMEWORK = {
 
     'PAGINATE_BY': 50,
 }
+
+##########################################################################
+## AWS Access Keys
+##########################################################################
+
+AWS_ACCESS_KEY_ID       = environ_setting('AWS_ACCESS_KEY_ID', '')
+AWS_SECRET_ACCESS_KEY   = environ_setting('AWS_SECRET_KEY', '')
+AWS_STORAGE_BUCKET_NAME = environ_setting('AWS_EB_BUCKET', 'bengfortstacks')
+#AWS_CALLING_FORMAT      = CallingFormat.SUBDOMAIN
