@@ -51,7 +51,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),   # Admin URLs
 
     # REST API Urls
-    url(r'^api/', include(router.urls)),
+    url(r'^api/', include(router.urls, namespace='api')),
 
     # Static Pages
     url(r'^$', BookList.as_view(template_name='site/index.html'), name='home'),
@@ -67,9 +67,3 @@ urlpatterns = patterns('',
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name='auth_logout'),
     url(r'^accounts/profile/$', ProfileView.as_view(), name='profile'),
 )
-
-# Development ONLY
-from django.conf import settings
-
-if settings.DEBUG:
-    urlpatterns += patterns("", url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),)
