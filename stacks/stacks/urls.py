@@ -51,7 +51,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),   # Admin URLs
 
     # REST API Urls
-    url(r'^api/', include(router.urls, namespace='api')),
+    url(r'^api/', include(router.urls)),
 
     # Static Pages
     url(r'^$', BookList.as_view(template_name='site/index.html'), name='home'),

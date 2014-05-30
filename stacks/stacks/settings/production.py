@@ -25,7 +25,7 @@ from .base import *
 ##########################################################################
 
 ## Debugging Settings
-DEBUG            = environ_setting('DEBUG_DJANGO', False)
+DEBUG            = False
 TEMPLATE_DEBUG   = False
 
 ## Hosts
