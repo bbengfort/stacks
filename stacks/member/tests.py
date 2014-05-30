@@ -85,4 +85,4 @@ class MemberAPITestCase(TestCase):
         Test that API access is Login-Only
         """
         self.client.logout()
-        endpoint = reverse('api:api-root')
+        endpoint = reverse('api-root')
