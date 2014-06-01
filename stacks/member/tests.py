@@ -19,7 +19,7 @@ Unit Tests for the Member app (and authentication)
 
 from django.test import TestCase
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 ##########################################################################
 ## View Test Cases
@@ -30,16 +30,24 @@ class MemberViewsTest(TestCase):
     Test the various authenticated views of the app
     """
 
-    def test_splash_page_redirect(self):
+    def test_splash_page_redirect_non_members(self):
         """
-        Ensure authenticated users are redirected to the app
+        Ensure authenticated non-members are redirected to their profile
         """
         self.test_user = User.objects.create_user('tester', password='secret')
         self.client.login(username='tester', password='secret')
         response = self.client.get(reverse('home'))
-        #self.assertRedirects(response, reverse('app-root'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'site/index.html')
+        self.assertRedirects(response, reverse('profile'))
+
+    def test_splash_page_redirect_members(self):
+        """
+        Ensure authenticated members are redirected to the app
+        """
+        self.test_user = User.objects.create_user('tester', password='secret')
+        self.test_user.groups.add(Group.objects.get(name='Member'))
+        self.client.login(username='tester', password='secret')
+        response = self.client.get(reverse('home'))
+        self.assertRedirects(response, reverse('app-root'))
 
     def test_splash_page(self):
         """
