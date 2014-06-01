@@ -25,6 +25,7 @@ from django.conf.urls import patterns, include, url
 ##########################################################################
 
 urlpatterns = patterns('',
+    url(r'^$', BookList.as_view(), name='book_list'),
     url(r'^books/(?P<slug>[-\w]+)/$', BookDetail.as_view(), name='book_detail'),
     url(r'^authors/(?P<slug>[-\w]+)/$', AuthorDetail.as_view(), name='author_detail'),
 )

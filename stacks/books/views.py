@@ -25,7 +25,7 @@ from rest_framework.response import Response
 
 from books.models import *
 from books.serializers import *
-from member.mixins import LoginRequired
+from member.mixins import MembershipRequired
 
 ##########################################################################
 ## API HTTP/JSON Views
@@ -60,14 +60,14 @@ class BookMediaViewSet(viewsets.ModelViewSet):
 ## Normal HTTP Views for Browser
 ##########################################################################
 
-class BookList(ListView):
+class BookList(MembershipRequired, ListView):
 
     model = Book
 
-class BookDetail(LoginRequired, DetailView):
+class BookDetail(MembershipRequired, DetailView):
 
     model = Book
 
-class AuthorDetail(LoginRequired, DetailView):
+class AuthorDetail(MembershipRequired, DetailView):
 
     model = Author

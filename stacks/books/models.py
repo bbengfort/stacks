@@ -166,7 +166,7 @@ class BookMedia(TimeStampedModel):
 
     book         = models.ForeignKey( 'books.Book', related_name='media' )
     uploader     = models.ForeignKey( 'auth.User', related_name='uploads' )
-    content      = models.FileField( max_length=255, upload_to='uploads' )
+    content      = models.FileField( max_length=255, upload_to='uploads', null=False, blank=False)
     content_type = models.CharField( max_length=5, choices=TYPES )
     signature    = models.CharField( max_length=64, **nullable )
 

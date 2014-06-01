@@ -1,6 +1,8 @@
-    {% load staticfiles %}
-    {# This page displays a grid of books in the users library. #}
+{% extends 'page.html' %}
+{% load staticfiles %}
+{# This page displays a grid of books in the users library. #}
 
+  {% block content %}
     <div class="container book-grid">
       <div class="row">
         {% for book in book_list %}
@@ -25,3 +27,4 @@
         {% endfor %}
       </div>
     </div>
+  {% endblock %}

@@ -23,6 +23,7 @@ from rest_framework import routers
 from django.contrib import admin
 
 from books.views import *
+from stacks.views import *
 from member.views import *
 
 ##########################################################################
@@ -53,12 +54,15 @@ urlpatterns = patterns('',
     # REST API Urls
     url(r'^api/', include(router.urls)),
 
+    # Backbone Web App
+    url(r'^$', SplashPage.as_view(), name="home"),
+    url(r'^app/$', WebAppView.as_view(), name="app-root"),
+
     # Static Pages
-    url(r'^$', BookList.as_view(template_name='site/index.html'), name='home'),
     url(r'^terms/$', TemplateView.as_view(template_name='site/legal/terms.html'), name='terms'),
     url(r'^privacy/$', TemplateView.as_view(template_name='site/legal/privacy.html'), name='privacy'),
 
-    # Library Pages
+    # Library Pages (No Javascript)
     url(r'^library/', include('books.urls', namespace='books')),
 
     # Social Authentication URLs
