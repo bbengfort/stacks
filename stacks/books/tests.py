@@ -110,6 +110,13 @@ class BookMediaModelTests(TestCase):
         """
         pass
 
+    @skip('not implemented')
+    def test_media_remove_on_delete(self):
+        """
+        Ensure that media is removed from S3 on delete
+        """
+        pass
+
     def test_media_upload_to_path(self):
         """
         Check that the upload_to path is correct for media

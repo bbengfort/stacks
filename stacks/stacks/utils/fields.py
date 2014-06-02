@@ -18,6 +18,7 @@ Custom fields for Models and Serializers
 ##########################################################################
 
 from rest_framework import serializers
+from django.templatetags.static import static
 
 ##########################################################################
 ## Custom Serializer Fields
@@ -28,7 +29,9 @@ class AbsoluteFileField(serializers.FileField):
     def to_native(self, value):
         request = self.context.get('request', None)
         if request:
-            return request.build_absolute_uri(value.url)
+            if value:
+                return request.build_absolute_uri(value.url)
+            return None
         return value.url
 
 class AbsoluteImageField(serializers.ImageField):
@@ -36,7 +39,11 @@ class AbsoluteImageField(serializers.ImageField):
     def to_native(self, value):
         request = self.context.get('request', None)
         if request:
-            return request.build_absolute_uri(value.url)
+            if value:
+                return request.build_absolute_uri(value.url)
+
+            # TODO: Put the nocover URL into settings
+            return static('img/nocover.jpg')
         return value.url
 
 ##########################################################################

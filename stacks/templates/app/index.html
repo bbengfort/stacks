@@ -1,30 +1,26 @@
-{% extends 'page.html' %}
+{% extends 'app/base.html' %}
 {% load staticfiles %}
 {# This page displays a grid of books in the users library. #}
 
   {% block content %}
     <div class="container book-grid">
       <div class="row">
-        {% for book in book_list %}
 
-        <div class="col-sm-2">
-          {% if book.cover %}
-          <a href="{{ book.get_absolute_url }}"><img class="img-responsive" src="{{ book.cover.url }}" /></a>
-          {% else %}
-          <a href="{{ book.get_absolute_url }}"><img class="img-responsive" src="{% static 'img/nocover.jpg' %}" /></a>
-          {% endif %}
-        </div>
-
-        {% if forloop.counter|divisibleby:6 %}
-      </div>
-      <div class="row">
-        {% endif %}
-
-        {% empty %}
-        <div class="col-md-12">
-          <p class="lead text-center">The Stacks are empty! Time to call the Librarian!</p>
-        </div>
-        {% endfor %}
       </div>
     </div>
+  {% endblock %}
+
+  {% block modals %}
+    <div id="modals" class="hidden">
+      {% csrf_token %}
+    </div>
+  {% endblock %}
+
+  {% block javascript %}
+    {{ block.super }}
+    <script type="text/javascript">
+      require(['underscore', 'jquery', 'bootstrap', 'app/main'], function(_, $, bootstrap, app) {
+        app.start();
+      });
+    </script>
   {% endblock %}
