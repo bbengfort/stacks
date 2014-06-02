@@ -25,6 +25,8 @@ from taggit.managers import TaggableManager
 from stacks.utils import upload_path, filehash
 from model_utils.models import TimeStampedModel
 from markupfield.fields import MarkupField
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
 
 from django.conf.global_settings import LANGUAGES
 
@@ -166,7 +168,8 @@ class BookMedia(TimeStampedModel):
 
     book         = models.ForeignKey( 'books.Book', related_name='media' )
     uploader     = models.ForeignKey( 'auth.User', related_name='uploads' )
-    content      = models.FileField( max_length=255, upload_to='uploads', null=False, blank=False)
+    content      = models.FileField( max_length=255, null=False, blank=False,
+                                upload_to=upload_path('uploads', 'book__slug'))
     content_type = models.CharField( max_length=5, choices=TYPES )
     signature    = models.CharField( max_length=64, **nullable )
 
@@ -181,3 +184,10 @@ class BookMedia(TimeStampedModel):
         db_table = "book_media"
         verbose_name = "book media"
         verbose_name_plural = "book media"
+
+## Ensure that data in s3 is cleaned up on delete
+@receiver(pre_delete, sender=BookMedia)
+def cleanup_content(sender, instance, **kwargs):
+    if instance.content:
+        # Must pass False to ensure FileField doesn't save the model.
+        instance.content.delete(False)

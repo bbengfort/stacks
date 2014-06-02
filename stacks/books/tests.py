@@ -20,8 +20,8 @@ Tests for the books app in the Stacks project
 from .models import *
 from unittest import skip
 from django.test import TestCase
-from stacks.utils import upload_path
 from django.contrib.auth.models import User
+from stacks.utils import upload_path, ngetattr
 
 ##########################################################################
 ## Models Test Cases
@@ -110,7 +110,6 @@ class BookMediaModelTests(TestCase):
         """
         pass
 
-    @skip('not implemented')
     def test_media_upload_to_path(self):
         """
         Check that the upload_to path is correct for media
@@ -120,14 +119,14 @@ class BookMediaModelTests(TestCase):
         # Set the expectations
         lookup        = {'pk': 1}
         expected_slug = u'the-definitive-guide-to-django'
-        expected_path = u'covers/the-definitive-guide-to-django.epub'
+        expected_path = u'uploads/the-definitive-guide-to-django.epub'
 
         # Fetch the media that we'll test
         media = BookMedia.objects.get(**lookup)
-        self.assertEqual(book_media.book.slug, expected_slug)
+        self.assertEqual(media.book.slug, expected_slug)
 
         # Grab the upload function and give it a file
-        upload_to   = media._meta.get_field('headshot').upload_to
+        upload_to   = media._meta.get_field('content').upload_to
         upload_path = upload_to(media, 'test_book_filename.epub')
         self.assertEqual(upload_path, expected_path)
 
@@ -138,3 +137,34 @@ class BookMediaModelTests(TestCase):
 ##########################################################################
 ## API Test Cases
 ##########################################################################
+
+##########################################################################
+## Utilities Test Cases
+##########################################################################
+
+class UtilityTestCase(TestCase):
+    """
+    Test various utilities related to the books app.
+    """
+
+    def test_ngetattr(self):
+        """
+        Test the multiple nested attribute lookup utility
+        """
+
+        class Thing(object):
+
+            def __init__(self, **kwargs):
+                for k,v in kwargs.items():
+                    setattr(self,k,v)
+
+
+        t1 = Thing(name='thing1', parent=None)
+        t2 = Thing(name='thing2', parent=t1)
+        t3 = Thing(name='thing3', parent=t2)
+        t4 = Thing(name='thing4', parent=t3)
+
+        self.assertEqual(ngetattr(t4, 'parent__parent__parent__name'), 'thing1')
+        self.assertEqual(ngetattr(t4, 'parent__parent__name'), 'thing2')
+        self.assertEqual(ngetattr(t4, 'parent__name'), 'thing3')
+        self.assertEqual(ngetattr(t4, 'name'), 'thing4')

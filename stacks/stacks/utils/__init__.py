@@ -27,10 +27,27 @@ import hashlib
 ## Nullable kwargs for models
 nullable = { 'blank': True, 'null': True, 'default':None }
 
+##########################################################################
+## Helper functions
+##########################################################################
+
+def ngetattr(thing, field, default=None):
+    """
+    Performs multiple nested object lookup by spliting on the Django style
+    '__' accessor and coninually accessing nested objects until done.
+    """
+    field = field.split('__')
+    for f in field:
+        thing = getattr(thing, f, default)
+    return thing
+
 def upload_path(path, field='slug'):
+    """
+    Computes the upload_path based on the field of a model.
+    """
     def wrapper(instance, filename):
         base, ext  = os.path.splitext(filename)
-        name = getattr(instance, field, None)
+        name = ngetattr(instance, field, None)
 
         if not name:
             name = base
@@ -40,6 +57,10 @@ def upload_path(path, field='slug'):
     return wrapper
 
 def filehash(fp, algorithm='sha1'):
+    """
+    Returns the hexdigest of the hash of the contents of a file with the
+    particular algorithm specified as the argument to the function.
+    """
     stream = getattr(hashlib, algorithm)()
     for chunk in fp.chunks():
         stream.update(chunk)
