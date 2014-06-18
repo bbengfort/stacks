@@ -36,3 +36,7 @@ SECRET_KEY = 'ag05z*%5)$+wccf@anpqe+u@7-^b#%=&9gezq64*ox2d#7v&&r'
 
 ## Content
 MEDIA_ROOT       = os.path.join(PROJECT_DIR, 'media')
+
+## Testing
+#STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+#STATIC_URL          = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME

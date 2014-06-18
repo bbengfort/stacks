@@ -236,5 +236,6 @@ REST_FRAMEWORK = {
 
 AWS_ACCESS_KEY_ID       = environ_setting('AWS_ACCESS_KEY_ID', '')
 AWS_SECRET_ACCESS_KEY   = environ_setting('AWS_SECRET_KEY', '')
-AWS_STORAGE_BUCKET_NAME = environ_setting('AWS_S3_BUCKET', 'bengfortstacks')
-#AWS_CALLING_FORMAT      = CallingFormat.SUBDOMAIN
+AWS_STORAGE_BUCKET_NAME = environ_setting('AWS_S3_BUCKET', 'bengfort-stacks')
+AWS_QUERYSTRING_AUTH    = True
+AWS_DEFAULT_ACL         = 'private'

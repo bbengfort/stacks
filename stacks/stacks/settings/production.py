@@ -46,8 +46,9 @@ DATABASES = {
 }
 
 ## Static files in S3
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+#STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+#STATIC_URL          = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 
 ## Static files served by Nginx
-#STATIC_ROOT = '/var/www/stacks/static'
+STATIC_ROOT = '/var/www/stacks/static'
 #MEDIA_ROOT  = '/var/www/stacks/media'
