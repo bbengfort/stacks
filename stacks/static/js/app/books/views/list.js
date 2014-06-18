@@ -20,7 +20,7 @@ function(require, exports, module) {
 
     var Backbone  = require('backbone');
     var _         = require('underscore');
-    var BookItemView = require('./item');
+    var BookGridItemView = require('./item');
 
     var BooksView = Backbone.View.extend({
         el: ".book-grid",
@@ -40,7 +40,7 @@ function(require, exports, module) {
             this.views.length = 0;
 
             this.collection.each(function(model, idx) {
-                var item = new BookItemView({ model: model });
+                var item = new BookGridItemView({ model: model });
                 item.render();
                 row.append(item.$el);
                 this.views.push(item);

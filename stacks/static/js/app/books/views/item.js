@@ -18,13 +18,13 @@
 define([
     'backbone',
     'underscore',
-    'text!../tmpl/book.html'
+    'text!../tmpl/book-grid.html'
 ],
 function(Backbone, _, bookHtml) {
 
-    var BookItemView = Backbone.View.extend({
+    var BookGridItemView = Backbone.View.extend({
         tagName: 'div',
-        className: 'col-sm-2 book-item',
+        className: 'col-sm-2 book-grid-item',
         template: _.template(bookHtml),
 
         events: {
@@ -38,6 +38,6 @@ function(Backbone, _, bookHtml) {
 
     });
 
-    return BookItemView;
+    return BookGridItemView;
 
 });
