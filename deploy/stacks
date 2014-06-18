@@ -16,7 +16,7 @@ server {
     # The basics
     listen 80;
     server_tokens off;
-    server_name localhost;
+    server_name stacks.bengfort.com;
     client_max_body_size 3M;
 
     # Logging
@@ -82,7 +82,7 @@ server {
         }
 
         # uWSGI Settings
-        uwsgi_pass 127.0.0.1:5356;
+        uwsgi_pass 127.0.0.1:3212;
         proxy_set_header    Host                $host;
         proxy_set_header    X-Real-IP           $remote_addr;
         proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
