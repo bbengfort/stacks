@@ -103,6 +103,7 @@ INSTALLED_APPS   = (
     'social.apps.django_app.default',
 
     # Stacks apps
+    'users',
 )
 
 ## Request Handling
