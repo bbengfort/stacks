@@ -20,6 +20,8 @@ The main URL router for the project
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from django.views.generic import TemplateView
+
 #############################################################################
 ## The URL Patterns for the app
 #############################################################################
@@ -28,4 +30,9 @@ urlpatterns = [
     ## Admin URLs
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', include(admin.site.urls)),
+
+    ## Site Pages
+    url(r'^$', TemplateView.as_view(template_name='site/index.html'), name='home'),
+    url(r'^terms/$', TemplateView.as_view(template_name='site/legal/terms.html'), name='terms'),
+    url(r'^privacy/$', TemplateView.as_view(template_name='site/legal/privacy.html'), name='privacy'),
 ]

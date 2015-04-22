@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% block title %}Bengfort Stacks{% endblock %}</title>
+
+  {% block meta %}
+  <meta name="author" content="{% block author %}Benjamin Bengfort{% endblock %}">
+  <meta name="keywords" content="{% block keywords %}Stacks, Bengfort, eBook, Library{% endblock %}">
+  <meta name="description" content="{% block description %}Personal eBook library for the Bengfort Family{% endblock %}">
+  {% endblock %}
+
+  {% block link %}
+  <!-- Shortcut Icons -->
+  <link rel="shortcut icon" href="{% static 'img/favicon.png' %}">
+  {% endblock %}
+
+  {% block stylesheets %}
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link href="{% static 'css/stacks.css' %}" rel="stylesheet">
+  {% endblock %}
+
+</head>
+<body>
+  {% block body %}{% endblock %}
+  {% block modals %}{% endblock %}
+
+  {% block javascript %}
+  <!-- Javascript at the bottom of the page for faster loading -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="{% static 'js/hotkeys.js' %}"></script>
+  {% endblock %}
+</body>
+</html>
