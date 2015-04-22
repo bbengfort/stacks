@@ -35,10 +35,10 @@
               {% endif %}
               <li class="dropdown-header">User Settings</li>
               <li><a href="{# url 'profile' #}"><i class="fa fa-user"></i> View Profile</a></li>
-              <li><a href="{# url 'auth_logout' #}"><i class="fa fa-road"></i>  Log out</a></li>
+              <li><a href="{% url 'auth:logout' %}"><i class="fa fa-road"></i>  Log out</a></li>
             </ul>
           {% else %}
-          <li><a href="{# url 'social:begin' 'google-oauth2' #}"><b class=""></b> Log in</a></li>
+          <li><a href="{% url 'social:begin' 'google-oauth2' %}"><b class=""></b> Log in</a></li>
           {% endif %}
           </li>
         </ul>

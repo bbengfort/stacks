@@ -19,7 +19,7 @@ env:
     - DB_HOST=localhost
     - DB_PORT=5432
     - EMAIL_HOST_PASSWORD=''
-    - GOOGLE_OAUTH2_KEY=''
+    - GOOGLE_OAUTH2_CLIENT_ID=''
     - GOOGLE_OAUTH2_SECRET=''
 
 notifications:

@@ -100,6 +100,7 @@ INSTALLED_APPS   = (
     'django.contrib.staticfiles',
 
     # Third party apps
+    'social.apps.django_app.default',
 
     # Stacks apps
 )
@@ -139,6 +140,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
@@ -176,3 +179,45 @@ EMAIL_PORT      = 587
 ##########################################################################
 
 GRAPPELLI_ADMIN_TITLE = "Bengfort Stacks Admin"
+
+##########################################################################
+## Social Authentication
+##########################################################################
+
+## Domain Specific Auth
+SOCIAL_AUTH_GOOGLE_WHITELISTED_DOMAINS = ['bengfort.com',]
+
+## Support for Social Auth authentication backends
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+## Social Auth namespace
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+## Google-specific authentication keys
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = environ_setting("GOOGLE_OAUTH2_CLIENT_ID", "")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = environ_setting("GOOGLE_OAUTH2_CLIENT_SECRET", "")
+
+## Login URLs and Redirects
+LOGIN_URL  = '/login/google-oauth2/'
+LOGOUT_URL = '/logout/'
+LOGIN_REDIRECT_URL = "/"
+
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.social_auth.associate_by_email',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details'
+)
+
+SOCIAL_AUTH_USER_MODEL = 'auth.User'
+
+SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
