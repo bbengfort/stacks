@@ -15,24 +15,25 @@
 /* globals exports,__filename */
 'use strict';
 
-define([
-    'jquery',
-    './books/models/book',
-    './books/views/list'
-],
-function($, BookCollection, BookListView) {
+define(function(require) {
+
+    var $ = require('jquery');
+    var BookCollection = require('./books/models/book');
+    var BookListView   = require('./books/views/list');
+    var AppRouter      = require('./routes');
 
     var view = new BookListView({
         collection: new BookCollection()
     });
 
-    return {
+    var App = new function() {
 
-        view:        view,
-        csrfToken:   null,
-        currentUser: null,
+        this.view        = view;
+        this.csrfToken   = null;
+        this.currentUser = null;
+        this.routes      = new AppRouter();
 
-        start: function() {
+        this.start = function() {
             this.csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
             this.currentUser = "http://127.0.0.1:8000/api/users/1/";
 
@@ -49,12 +50,17 @@ function($, BookCollection, BookListView) {
 
             });
 
-            console.log('Stacks App Started!');
-        },
+            // Start the history for the router
+            Backbone.history.start();
 
-        stop: function() {
+            console.log('Stacks App Started!');
+        }
+
+        this.stop = function() {
             console.log('Stacks App Stopped!');
         }
 
     };
+
+    return App
 });

@@ -22,7 +22,18 @@ define([
 function(Backbone, _) {
 
     var BookModel = Backbone.Model.extend({
-
+        defaults: {
+            title: null,
+            slug: null,
+            pubdate: null,
+            pages: null,
+            description: null,
+            cover: null,
+            authors: [],
+            publisher: null,
+            media: null,
+            tags: []
+        }
     });
 
     var BookCollectionMeta = Backbone.Model.extend({
