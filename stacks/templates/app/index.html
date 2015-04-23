@@ -1,0 +1,17 @@
+{% extends 'app/base.html' %}
+{% load staticfiles %}
+{# This page displays a grid of books in the users library. #}
+
+  {% block content %}
+    <div class="container book-grid">
+      <div class="row">
+
+      </div>
+    </div>
+  {% endblock %}
+
+  {% block modals %}
+    <div id="modals" class="hidden">
+      {% csrf_token %}
+    </div>
+  {% endblock %}

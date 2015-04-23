@@ -108,6 +108,8 @@ class MemberViewsTest(TestCase):
     Test the various authenticated views of the app
     """
 
+    fixtures = ['groups',]
+
     def test_splash_page_redirect_non_members(self):
         """
         Ensure authenticated non-members are redirected to their profile
@@ -143,7 +145,7 @@ class MemberViewsTest(TestCase):
 
         # List of views that should be protected
         protected = (
-            #'home', # TODO!
+            'app-root',
             'profile',
             #'book_detail',   # Requires title slug ...
             #'author_detail', # Requires author slug ...
@@ -153,9 +155,15 @@ class MemberViewsTest(TestCase):
         for name in protected:
             self.client.logout()  # Ensure we're logged out
             url = reverse(name)   # Get the url for this view
-            login_url = reverse('auth_login') + '?next=' + url
+            social_auth = reverse('social:begin', args=('google-oauth2',))
+            login_url = 'http://testserver%s/?next=%s' % (social_auth, url)
+
             response = self.client.get(url)
-            self.assertRedirects(response, login_url, msg_prefix=msg % (name, url))
+            self.assertEqual(response.status_code, 302, msg=msg % (name, url))
+            self.assertEqual(response['Location'], login_url)
+
+            # msg_prefix=msg % (name, url)
+            # self.assertRedirects(response, login_url, msg_prefix=msg_prefix)
 
 
 class UserViewsTest(TestCase):
@@ -182,7 +190,7 @@ class UserViewsTest(TestCase):
         endpoint = reverse('profile')
         loginurl = reverse('social:begin', args=('google-oauth2',))
         params   = "next=%s" % endpoint
-        expected = "%s?%s" % (loginurl, params)
+        expected = "%s/?%s" % (loginurl, params)
         response = self.client.get(endpoint)
 
         self.assertRedirects(response, expected, fetch_redirect_response=False)
@@ -225,7 +233,7 @@ class MemberAPITestCase(TestCase):
         Test that API access is Login-Only
         """
         self.client.logout()
-        endpoint = reverse('api-root')
+        endpoint = reverse('api:api-root')
 
         response = self.client.get(endpoint)
         self.assertEqual(response.status_code, 403)

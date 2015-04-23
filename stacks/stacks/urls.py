@@ -17,11 +17,25 @@ The main URL router for the project
 ## Imports
 #############################################################################
 
+from django.views.generic import TemplateView
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from django.views.generic import TemplateView
 from users.views import ProfileView
+from stacks.views import SplashPage, WebAppView
+
+from rest_framework import routers
+from users.views import UserViewSet
+from stacks.views import HeartbeatViewSet
+
+##########################################################################
+## Endpoint Discovery
+##########################################################################
+
+## API
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'status', HeartbeatViewSet, "status")
 
 #############################################################################
 ## The URL Patterns for the app
@@ -33,12 +47,18 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     ## Site Pages
-    url(r'^$', TemplateView.as_view(template_name='site/index.html'), name='home'),
+    url(r'^$', SplashPage.as_view(), name='home'),
     url(r'^terms/$', TemplateView.as_view(template_name='site/legal/terms.html'), name='terms'),
     url(r'^privacy/$', TemplateView.as_view(template_name='site/legal/privacy.html'), name='privacy'),
 
-    ## Membership URLs
+    ## Application Pages
+    url(r'^app/$', WebAppView.as_view(), name='app-root'),
+
+    ## Authentication
     url('', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
     url(r'^profile/$', ProfileView.as_view(), name='profile'),
+
+    ## REST API Urls
+    url(r'^api/', include(router.urls, namespace="api")),
 ]
