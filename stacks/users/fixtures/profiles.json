@@ -1,0 +1,32 @@
+[
+{
+    "fields": {
+        "email_hash": "e64c7d89f26bd1972efa854d13d7dd61",
+        "user": 1,
+        "biography": "I do all the work, all the time.",
+        "location": "San Francisco, CA"
+    },
+    "model": "users.profile",
+    "pk": 1
+},
+{
+    "fields": {
+        "email_hash": "694ea0904ceaf766c6738166ed89bafb",
+        "user": 2,
+        "biography": "Just another anonymous face in an anonymous city.",
+        "location": "New York, NY"
+    },
+    "model": "users.profile",
+    "pk": 2
+},
+{
+    "fields": {
+        "email_hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "user": 3,
+        "biography": "Not a member of the Stacks application - just browsing cookie opportunities.",
+        "location": "Nantucket, MA"
+    },
+    "model": "users.profile",
+    "pk": 3
+}
+]

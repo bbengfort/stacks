@@ -1,0 +1,15 @@
+[
+    {
+        "pk": 1,
+        "model": "books.bookmedia",
+        "fields": {
+            "uploader": 2,
+            "created": "2014-05-30T13:20:00.411Z",
+            "modified": "2014-05-30T13:20:00.422Z",
+            "content": "uploads/9781430219361.epub",
+            "book": 2,
+            "content_type": "epub",
+            "signature": "cee22ab8ec6dc85b03877486a965984747c95c56"
+        }
+    }
+]

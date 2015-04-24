@@ -100,10 +100,12 @@ INSTALLED_APPS   = (
     'django.contrib.staticfiles',
 
     # Third party apps
+    'taggit',
     'social.apps.django_app.default',
     'rest_framework',
 
     # Stacks apps
+    'books',
     'users',
 )
 
@@ -160,6 +162,9 @@ STATICFILES_FINDERS = (
 STATICFILES_DIRS    = (
     os.path.join(PROJECT_DIR, 'static'),
 )
+
+## Set default file storage handler to hash the names
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 ##########################################################################
 ## Logging and Error Reporting
@@ -247,3 +252,13 @@ REST_FRAMEWORK = {
 
     'PAGINATE_BY': 50,
 }
+
+##########################################################################
+## AWS Access Keys
+##########################################################################
+
+AWS_ACCESS_KEY_ID       = environ_setting('AWS_ACCESS_KEY_ID', '')
+AWS_SECRET_ACCESS_KEY   = environ_setting('AWS_SECRET_KEY', '')
+AWS_STORAGE_BUCKET_NAME = environ_setting('AWS_S3_BUCKET', 'bengfort-stacks')
+AWS_QUERYSTRING_AUTH    = True
+AWS_DEFAULT_ACL         = 'private'
