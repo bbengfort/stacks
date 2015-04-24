@@ -17,6 +17,7 @@ Helpers for modifying book title strings
 ## Helper functions
 ##########################################################################
 
+
 def capitalize(word):
     """
     Checks if a hyphen is in the word, and if so, capitalizes every
@@ -24,33 +25,38 @@ def capitalize(word):
     """
     if '-' in word:
         words = word.split('-')
-        words = [word.capitalize() for word in words]
+        words = [w.capitalize() for w in words]
         return '-'.join(words)
     return word.capitalize()
+
 
 def title_case(string):
     """
     Capitalize the first and last word of the string, and every other
     word in the string, EXCEPT those that are listed in the articles.
     """
-    articles = ["the", "a", "an", "of", "at", "on", "to", "over", "and", "but", "or", "nor"]
+    articles = [
+        "the", "a", "an", "of", "at", "on", "to",
+        "over", "and", "but", "or", "nor"
+    ]
 
     words = string.split(' ')
     for i, word in enumerate(words):
         # First word and last word should be capitalized.
-        if i == 0 or i == len(words)-1:
-            word = word.capitalize( )
+        if i == 0 or i == len(words) - 1:
+            word = word.capitalize()
         else:
             # Check for acronyms.
-            if word.isupper( ):
+            if word.isupper():
                 continue
             else:
-                word = word.lower( )
+                word = word.lower()
 
             if word not in articles:
                 word = capitalize(word)
         words[i] = word
     return ' '.join(words)
+
 
 def make_title(t):
     articles = ["The", "A", "An", "Of", "At", "On"]
@@ -65,7 +71,7 @@ def make_title(t):
 
     # Check if comma appended article:
     tgrp = t.split(',')
-    if tgrp[-1].strip( ) in articles:
+    if tgrp[-1].strip() in articles:
         tgrp.insert(0, tgrp.pop())
         t = "%s %s" % (tgrp[0].strip(), ','.join(tgrp[1:]))
 

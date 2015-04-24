@@ -17,7 +17,11 @@ Registration of books models to the admin
 ## Imports
 ##########################################################################
 
-from books.models import *
+from books.models import Book
+from books.models import Author
+from books.models import Publisher
+from books.models import Review
+from books.models import BookMedia
 from django.contrib import admin
 
 ##########################################################################

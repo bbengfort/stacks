@@ -18,14 +18,14 @@ Router for the Books display pages.
 ##########################################################################
 
 from books.views import *
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 
 ##########################################################################
 ## URL Patterns
 ##########################################################################
 
 urlpatterns = patterns('',
-    url(r'^$', BookList.as_view(), name='book_list'),
-    url(r'^books/(?P<slug>[-\w]+)/$', BookDetail.as_view(), name='book_detail'),
-    url(r'^authors/(?P<slug>[-\w]+)/$', AuthorDetail.as_view(), name='author_detail'),
+    url(r'^$', BookList.as_view(), name='book-list'),
+    url(r'^books/(?P<slug>[-\w]+)/$', BookDetail.as_view(), name='book-detail'),
+    url(r'^authors/(?P<slug>[-\w]+)/$', AuthorDetail.as_view(), name='author-detail'),
 )

@@ -17,16 +17,16 @@ Google Books API client
 ## Imports
 ##########################################################################
 
-import json
 import requests
 
 from urllib import urlencode
 from stacks.utils.title import *
-from datetime import date, datetime
+from datetime import datetime
 
 ##########################################################################
 ## Exception class
 ##########################################################################
+
 
 class GoogleBooksException(Exception):
     """
@@ -38,28 +38,28 @@ class GoogleBooksException(Exception):
 ## Query Builder
 ##########################################################################
 
+
 class QueryBuilder(object):
     """
     Helper to dynamically construct a Google Books search query, both from
     init and at runtime.
-
     A Google Books search query is constructed of search terms and keyword
     search terms.
-
     Search terms are searched throughout the search space of the book,
     title, author, etc.
-
     Keyword search terms restrict the search to particular fields, those
     which I will allow are listed in the KEYWORDS class variable.
     """
 
-    KEYWORDS = ( 'intitle',
-                 'inauthor',
-                 'inpublisher',
-                 'subject',
-                 'isbn',
-                 'lccn',
-                 'oclc', )
+    KEYWORDS = (
+        'intitle',
+        'inauthor',
+        'inpublisher',
+        'subject',
+        'isbn',
+        'lccn',
+        'oclc',
+    )
 
     def __init__(self, *terms, **kwterms):
         """
@@ -129,6 +129,7 @@ class QueryBuilder(object):
 ## API Access object
 ##########################################################################
 
+
 class GoogleBooks(object):
 
     ENDPOINT = "https://www.googleapis.com/books/v1/volumes"
@@ -142,12 +143,10 @@ class GoogleBooks(object):
     def lookup(self, query):
         """
         Executes a lookup request for the given QueryBuilder query
-
         Returns one of the following:
             - None (for nothing found)
             - A single dictionary (for one item found)
             - A list of dictionaries (for multiple items found)
-
         Note: GoogleBooksExceptions raised in parse will be caught,
         and none will be returned instead. Directly parse to debug.
         """
@@ -228,6 +227,7 @@ class GoogleBooks(object):
 ## Response Parser
 ##########################################################################
 
+
 class BookDict(object):
     """
     Emulates a Query dictionary and wraps the returned JSON data from a
@@ -274,11 +274,9 @@ class BookDict(object):
         """
         Generator function that yields all the authors in the authors
         field.
-
         This could simply be an alias for self['authors'] but if we want
         to do any management or memory optimization, this functionality
         will be helpful
-
         Note: Currently yields full name strings.
         """
         for author in self['authors']:
@@ -295,7 +293,6 @@ class BookDict(object):
     def pubdate(self):
         """
         Converts "publishedDate" into a python date
-
         If a publishedDate couldn't be found or parsed, this method will
         return None.
         """
@@ -340,10 +337,8 @@ class BookDict(object):
     def thumbnail_url(self):
         """
         Looks for the biggest thumbnail image URL to return.
-
         NOTE: To get bigger images out of Google, you have to do a request
         with the Google specific identifier.
-
         TODO: Strip weirdness out of URL
         """
         sizes = ("thumbnail", "smallThumbnail")
@@ -356,7 +351,6 @@ class BookDict(object):
         """
         Parses out the relevant data from the raw data, and stores it for
         access as though this object were a dictionary.
-
         Modify this method for required vs. optional fields
         """
 
@@ -396,14 +390,11 @@ class BookDict(object):
         """
         Performs a "priority search" on the search space, based on the
         order of search keys if they're in the search space.
-
         The expected type of the space is an iterable that contains
         dictionary-like objects, with the search keys. (In this case,
         Google Books industryIdentifiers list)
-
         The keys is an ordered tuple or list to search the dictionary for
         -- it returns the first key in the order it can find it.
-
         TODO: Make more generic
         """
 

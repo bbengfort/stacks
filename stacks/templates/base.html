@@ -20,8 +20,9 @@
   {% endblock %}
 
   {% block stylesheets %}
-  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
-  <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   <link href="{% static 'css/stacks.css' %}" rel="stylesheet">
   {% endblock %}
 
@@ -32,10 +33,9 @@
 
   {% block javascript %}
   <!-- Javascript at the bottom of the page for faster loading -->
-  <script src="{% static 'js/libs/underscore.js' %}"></script>
-  <script src="{% static 'js/libs/jquery.js' %}"></script>
-  <script src="{% static 'js/libs/backbone.js' %}"></script>
-  <script src="{% static 'js/libs/bootstrap.js' %}"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
   <script src="{% static 'js/hotkeys.js' %}"></script>
   {% endblock %}
 </body>

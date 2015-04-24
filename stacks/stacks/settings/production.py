@@ -2,9 +2,9 @@
 # Production environment specific settings
 #
 # Author:   Benjamin Bengfort <benjamin@bengfort.com>
-# Created:  Thu May 15 14:17:57 2014 -0400
+# Created:  Wed Apr 22 14:34:54 2015 -0400
 #
-# Copyright (C) 2014 Bengfort.com
+# Copyright (C) 2015 Bengfort.com
 # For license information, see LICENSE.txt
 #
 # ID: production.py [] benjamin@bengfort.com $
@@ -17,7 +17,6 @@ Production environment specific settings
 ## Imports
 ##########################################################################
 
-import os
 from .base import *
 
 ##########################################################################
@@ -26,11 +25,10 @@ from .base import *
 
 ## Debugging Settings
 DEBUG            = False
-TEMPLATE_DEBUG   = False
 
 ## Hosts
 ALLOWED_HOSTS    = ['stacks.bengfort.com',
-                    'stacks-web-prod.elasticbeanstalk.com',
+                    'stacks.herokuapp.com',
                     'localhost', '127.0.0.1']
 
 ## Database Settings
@@ -45,10 +43,15 @@ DATABASES = {
     }
 }
 
-## Static files in S3
-#STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-#STATIC_URL          = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
-
 ## Static files served by Nginx
 STATIC_ROOT = '/var/www/stacks/static'
-#MEDIA_ROOT  = '/var/www/stacks/media'
+MEDIA_ROOT  = '/var/www/stacks/media'
+
+## Email Settings
+SERVER_EMAIL    = environ_setting("SERVER_EMAIL",
+                                  "Stacks Admin <server@bengfort.com>")
+EMAIL_USE_TLS   = True
+EMAIL_HOST      = environ_setting("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_HOST_USER = environ_setting("EMAIl_HOST_USER", "server@bengfort.com")
+EMAIL_HOST_PASSWORD = environ_setting("EMAIL_HOST_PASSWORD")
+EMAIL_PORT      = 587

@@ -17,27 +17,27 @@ Tests for the books app in the Stacks project
 ## Imports
 ##########################################################################
 
-from .models import *
+from books.models import *
 from unittest import skip
 from django.test import TestCase
 from django.contrib.auth.models import User
-from stacks.utils import upload_path, ngetattr
+from stacks.utils import ngetattr
 
 ##########################################################################
 ## Models Test Cases
 ##########################################################################
+
 
 class BookModelTests(TestCase):
     """
     Test the methods on the Book Model
     """
 
-    fixtures = ['initial_data.json']
+    fixtures = ['books.json']
 
     def test_cover_upload_to_path(self):
         """
         Assert that the upload_to path is correct for book covers
-
         This works by creating a book instance, then passing that directly
         to the upload_path function rather than trying to upload something
         completely. In the future we may want to try an actual upload.
@@ -57,17 +57,17 @@ class BookModelTests(TestCase):
         upload_path = upload_to(book, 'test_book_filename.png')
         self.assertEqual(upload_path, expected_path)
 
+
 class AuthorModelTests(TestCase):
     """
     Test the methods on the Author Model
     """
 
-    fixtures = ['initial_data.json']
+    fixtures = ['books.json']
 
     def test_headshot_upload_to_path(self):
         """
         Check that the upload_to path is correct for author headshots
-
         See the Book model test for more details.
         """
 
@@ -85,12 +85,13 @@ class AuthorModelTests(TestCase):
         upload_path = upload_to(author, 'apicture_of_a_person.jpg')
         self.assertEqual(upload_path, expected_path)
 
+
 class BookMediaModelTests(TestCase):
     """
     Test the methods on the BookMedia model
     """
 
-    fixtures = ['media.json']
+    fixtures = ['books', 'groups', 'users', 'profiles', 'media']
 
     def test_content_required(self):
         """
@@ -120,7 +121,6 @@ class BookMediaModelTests(TestCase):
     def test_media_upload_to_path(self):
         """
         Check that the upload_to path is correct for media
-
         See Book model tests for more details.
         """
         # Set the expectations
@@ -149,6 +149,7 @@ class BookMediaModelTests(TestCase):
 ## Utilities Test Cases
 ##########################################################################
 
+
 class UtilityTestCase(TestCase):
     """
     Test various utilities related to the books app.
@@ -162,9 +163,8 @@ class UtilityTestCase(TestCase):
         class Thing(object):
 
             def __init__(self, **kwargs):
-                for k,v in kwargs.items():
-                    setattr(self,k,v)
-
+                for k, v in kwargs.items():
+                    setattr(self, k, v)
 
         t1 = Thing(name='thing1', parent=None)
         t2 = Thing(name='thing2', parent=t1)

@@ -1,16 +1,16 @@
-# utils
-# Helper code for the Stacks package
+# stacks.utils
+# Utilities for the entire Stacks project
 #
 # Author:   Benjamin Bengfort <benjamin@bengfort.com>
-# Created:  Fri May 16 20:31:56 2014 -0400
+# Created:  Wed Apr 22 18:32:13 2015 -0400
 #
-# Copyright (C) 2014 Bengfort.com
+# Copyright (C) 2015 Bengfort.com
 # For license information, see LICENSE.txt
 #
 # ID: __init__.py [] benjamin@bengfort.com $
 
 """
-Helper code for the Stacks package
+Utilities for the entire Stacks project
 """
 
 ##########################################################################
@@ -20,16 +20,19 @@ Helper code for the Stacks package
 import os
 import hashlib
 
+from django.utils.deconstruct import deconstructible
+
 ##########################################################################
 ## Utilities
 ##########################################################################
 
 ## Nullable kwargs for models
-nullable = { 'blank': True, 'null': True, 'default':None }
+nullable = {'blank': True, 'null': True, 'default': None}
 
 ##########################################################################
 ## Helper functions
 ##########################################################################
+
 
 def ngetattr(thing, field, default=None):
     """
@@ -41,20 +44,6 @@ def ngetattr(thing, field, default=None):
         thing = getattr(thing, f, default)
     return thing
 
-def upload_path(path, field='slug'):
-    """
-    Computes the upload_path based on the field of a model.
-    """
-    def wrapper(instance, filename):
-        base, ext  = os.path.splitext(filename)
-        name = ngetattr(instance, field, None)
-
-        if not name:
-            name = base
-
-        name += ext
-        return os.path.join(path, name)
-    return wrapper
 
 def filehash(fp, algorithm='sha1'):
     """
@@ -65,3 +54,41 @@ def filehash(fp, algorithm='sha1'):
     for chunk in fp.chunks():
         stream.update(chunk)
     return stream.hexdigest()
+
+
+##########################################################################
+## Callable dynamic classes
+##########################################################################
+
+
+@deconstructible
+class PathUploader(object):
+
+    def __init__(self, path, field='slug'):
+        """
+        Object callable that computes the upload_path based on the field of a
+        model. This class is used instead of a function wrapper to support
+        (hopefully) migrations.
+        """
+
+        self.path  = path
+        self.field = field
+
+    def __eq__(self, other):
+        """
+        Equality is used in migrations to ensure that things haven't changed.
+        """
+        return (
+            self.path == other.path and
+            self.field == other.field
+        )
+
+    def __call__(self, instance, filename):
+        base, ext  = os.path.splitext(filename)
+        name = ngetattr(instance, self.field, None)
+
+        if not name:
+            name = base
+
+        name += ext
+        return os.path.join(self.path, name)

@@ -14,7 +14,14 @@
             </h1>
             <div class="grp-module">
                 <div class="grp-row">
-                    <p class="grp-description"><a href="{% url 'auth_login' %}"><strong>{% trans 'Log in again' %}</strong></a></p>
+                    <p class="grp-description">
+                        <a href="{% url 'home' %}"><strong>{% trans 'Return to Stacks' %}</strong></a>
+                    </p>
+                </div>
+                <div class="grp-row">
+                    <p class="grp-description">
+                        <a href="{% url 'auth:login' %}"><strong>{% trans 'Log in again' %}</strong></a>
+                    </p>
                 </div>
             </div>
         </div>

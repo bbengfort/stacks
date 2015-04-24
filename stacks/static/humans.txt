@@ -7,7 +7,7 @@
 
 /* SITE */
 
-    Last update: 2014/05/15
+    Last update: 2015/04/22
     Language: English
     Doctype: HTML5
-    IDE: Sublime Text 3
+    IDE: Atom Editor

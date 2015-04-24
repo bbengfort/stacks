@@ -19,7 +19,6 @@ Serializers for the REST Framework
 
 from books.models import *
 from rest_framework import serializers
-from rest_framework.compat import smart_text
 from stacks.utils.fields import AbsoluteFileField
 from stacks.utils.fields import AbsoluteImageField
 from stacks.utils.fields import MarkdownField
@@ -27,6 +26,7 @@ from stacks.utils.fields import MarkdownField
 ##########################################################################
 ## Serializers
 ##########################################################################
+
 
 class AuthorSerializer(serializers.ModelSerializer):
     """
@@ -39,6 +39,7 @@ class AuthorSerializer(serializers.ModelSerializer):
         model  = Author
         fields = ('id', 'name', 'about')
 
+
 class PublisherSerializer(serializers.ModelSerializer):
     """
     Serializes the Publisher object for use in the API.
@@ -47,6 +48,7 @@ class PublisherSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Publisher
         fields = ('id', 'name', 'location')
+
 
 class BookMediaSerializer(serializers.ModelSerializer):
     """
@@ -62,6 +64,7 @@ class BookMediaSerializer(serializers.ModelSerializer):
         model  = BookMedia
         fields = ('id','book', 'uploader', 'content', 'content_type', 'signature')
 
+
 class SimpleBookMediaSerializer(BookMediaSerializer):
     """
     Serializes the BookMedia with a limited amount of meta data required
@@ -71,6 +74,7 @@ class SimpleBookMediaSerializer(BookMediaSerializer):
     class Meta:
         model  = BookMedia
         fields = ('id', 'content', 'content_type', 'signature')
+
 
 class BookSerializer(serializers.ModelSerializer):
     """
@@ -92,6 +96,7 @@ class BookSerializer(serializers.ModelSerializer):
         fields  = ('id', 'title', 'slug', 'pubdate', 'pages', 'description',
                    'cover', 'authors', 'publisher', 'media', 'tags')
 
+
 class ReviewSerializer(serializers.ModelSerializer):
     """
     Obligatory serializer for the Review object in the API.
@@ -101,4 +106,3 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = Review
-

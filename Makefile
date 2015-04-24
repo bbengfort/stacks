@@ -3,7 +3,7 @@ SHELL := /bin/sh
 
 # Set important Paths
 PROJECT := stacks
-LOCALPATH := $(CURDIR)/stacks
+LOCALPATH := $(CURDIR)/$(PROJECT)
 PYTHONPATH := $(LOCALPATH)/
 PYTHON_BIN := $(VIRTUAL_ENV)/bin
 
@@ -18,12 +18,12 @@ DJANGO_LOCAL_SETTINGS_MODULE = $(PROJECT).settings.$(LOCAL_SETTINGS)
 DJANGO_LOCAL_POSTFIX := --settings=$(DJANGO_LOCAL_SETTINGS_MODULE) --pythonpath=$(PYTHONPATH)
 
 # Testing Settings
-TEST_SETTINGS := test
+TEST_SETTINGS := testing
 DJANGO_TEST_SETTINGS_MODULE = $(PROJECT).settings.$(TEST_SETTINGS)
 DJANGO_TEST_POSTFIX := --settings=$(DJANGO_TEST_SETTINGS_MODULE) --pythonpath=$(PYTHONPATH)
 
 # Apps to test
-APPS := books member
+APPS := stacks books users
 
 # Export targets not associated with files
 .PHONY: test showenv coverage bootstrap pip virtualenv clean virtual_env_set
@@ -55,8 +55,9 @@ clean:
 	-rm -rf .coverage
 	-rm -rf build
 	-rm -rf dist
-	-rm -rf memorandi/*.egg-info
+	-rm -rf $(PROJECT)/*.egg-info
 
 # Targets for Django testing
 test:
-	$(PYTHON_BIN)/coverage run --source=$(LOCALPATH) $(PYTHON_BIN)/django-admin.py test $(APPS) $(DJANGO_LOCAL_POSTFIX)
+	$(PYTHON_BIN)/coverage run --source=$(LOCALPATH) $(LOCALPATH)/manage.py test $(LOCALPATH) $(DJANGO_TEST_POSTFIX)
+	- $(PYTHON_BIN)/coverage report

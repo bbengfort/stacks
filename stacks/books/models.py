@@ -22,7 +22,7 @@ from model_utils import Choices
 from stacks.utils import nullable
 from autoslug import AutoSlugField
 from taggit.managers import TaggableManager
-from stacks.utils import upload_path, filehash
+from stacks.utils import PathUploader, filehash
 from model_utils.models import TimeStampedModel
 from markupfield.fields import MarkupField
 from django.db.models.signals import pre_delete
@@ -33,6 +33,7 @@ from django.conf.global_settings import LANGUAGES
 ##########################################################################
 ## Models for Book Information
 ##########################################################################
+
 
 class Book(TimeStampedModel):
     """
@@ -48,7 +49,7 @@ class Book(TimeStampedModel):
     language     = models.CharField( max_length=5, default="en", choices=LANGUAGES )
     pages        = models.PositiveSmallIntegerField( **nullable )
     description  = MarkupField( markup_type='markdown', **nullable )
-    cover        = models.ImageField( max_length=255, upload_to=upload_path('covers', 'slug'), **nullable )
+    cover        = models.ImageField( max_length=255, upload_to=PathUploader('covers', 'slug'), **nullable )
     publisher    = models.ForeignKey( "books.Publisher", related_name="books", null=True, blank=True, default=None )
     authors      = models.ManyToManyField( "books.Author", related_name="books" )
     critics      = models.ManyToManyField( "auth.User", through="books.Review", related_name="books")
@@ -80,6 +81,7 @@ class Book(TimeStampedModel):
         ordering = ['-pubdate', '-created']
         get_latest_by = "modified"
 
+
 class Publisher(TimeStampedModel):
     """
     Holds Publisher information for quick publishing lookups.
@@ -97,6 +99,7 @@ class Publisher(TimeStampedModel):
         get_latest_by = "modified"
         unique_together = ('name', 'location')
 
+
 class Author(TimeStampedModel):
     """
     Holds Author information for quick author lookups.
@@ -106,7 +109,7 @@ class Author(TimeStampedModel):
 
     name         = models.CharField( max_length=255 )
     slug         = AutoSlugField( populate_from='name', unique=True, editable=True, blank=True )
-    headshot     = models.ImageField( max_length=255, upload_to=upload_path('authors', 'slug'), **nullable )
+    headshot     = models.ImageField( max_length=255, upload_to=PathUploader('authors', 'slug'), **nullable )
     about        = MarkupField( markup_type='markdown', **nullable )
     website      = models.URLField( **nullable )
     gender       = models.CharField( max_length=1, choices=GENDER, null=True, blank=True, default=None )
@@ -133,6 +136,7 @@ class Author(TimeStampedModel):
 ## Obligatory Review Model
 ##########################################################################
 
+
 class Review(TimeStampedModel):
     """
     Connects users to books through reviews.
@@ -156,10 +160,12 @@ class Review(TimeStampedModel):
 ## File Handling and Reference Model
 ##########################################################################
 
+book_uploader = PathUploader('uploads', 'book__slug')
+
+
 class BookMedia(TimeStampedModel):
     """
     Contains information about a stored file for a particular book.
-
     TODO: Compute the MD5 hash of the temporary upload on upload.
     """
 
@@ -169,7 +175,7 @@ class BookMedia(TimeStampedModel):
     book         = models.ForeignKey( 'books.Book', related_name='media' )
     uploader     = models.ForeignKey( 'auth.User', related_name='uploads' )
     content      = models.FileField( max_length=255, null=False, blank=False,
-                                upload_to=upload_path('uploads', 'book__slug'))
+                                upload_to=book_uploader)
     content_type = models.CharField( max_length=5, choices=TYPES )
     signature    = models.CharField( max_length=64, **nullable )
 
@@ -184,6 +190,7 @@ class BookMedia(TimeStampedModel):
         db_table = "book_media"
         verbose_name = "book media"
         verbose_name_plural = "book media"
+
 
 ## Ensure that data in s3 is cleaned up on delete
 @receiver(pre_delete, sender=BookMedia)

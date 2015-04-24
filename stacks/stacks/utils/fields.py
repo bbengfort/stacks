@@ -24,6 +24,7 @@ from django.templatetags.static import static
 ## Custom Serializer Fields
 ##########################################################################
 
+
 class AbsoluteFileField(serializers.FileField):
 
     def to_native(self, value):
@@ -33,6 +34,7 @@ class AbsoluteFileField(serializers.FileField):
                 return request.build_absolute_uri(value.url)
             return None
         return value.url
+
 
 class AbsoluteImageField(serializers.ImageField):
 
@@ -49,6 +51,7 @@ class AbsoluteImageField(serializers.ImageField):
 ##########################################################################
 ## Markdown Field
 ##########################################################################
+
 
 class MarkdownField(serializers.WritableField):
 

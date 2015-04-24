@@ -15,12 +15,3 @@
       {% csrf_token %}
     </div>
   {% endblock %}
-
-  {% block javascript %}
-    {{ block.super }}
-    <script type="text/javascript">
-      require(['underscore', 'jquery', 'bootstrap', 'app/main'], function(_, $, bootstrap, app) {
-        app.start();
-      });
-    </script>
-  {% endblock %}

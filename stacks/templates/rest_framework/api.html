@@ -2,7 +2,7 @@
 
 {% block title %}Bengfort Stacks API{% endblock %}
 
-{% block branding %}<a class='brand' rel="nofollow" href='/'>Bengfort Stacks API</a>{% endblock %}
+{% block branding %}<a class='navbar-brand' rel="nofollow" href='/'>Bengfort Stacks API</a>{% endblock %}
 
 {% block userlinks %}
 {% if user.is_authenticated %}
@@ -16,7 +16,7 @@
     <li><a href="/api/">API Docs</a></li>
     {% endif %}
     <li><a href="{% url 'profile' %}">View Profile</a></li>
-    <li><a href="{% url 'auth_logout' %}">Log out</a></li>
+    <li><a href="{% url 'auth:logout' %}">Log out</a></li>
   </ul>
 {% else %}
 <li><a href="{% url 'social:begin' 'google-oauth2' %}"><b class=""></b> Log in</a></li>
@@ -26,6 +26,6 @@
 
 {% block footer %}
   <div class="footer">
-    <p>&copy; 2014 <a href="/">Bengfort.com</a>, All Rights Reserved</p>
+    <p>&copy; 2014-2015 <a href="/">Bengfort.com</a>, All Rights Reserved</p>
   </div>
 {% endblock %}

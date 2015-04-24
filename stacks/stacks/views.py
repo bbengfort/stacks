@@ -2,9 +2,9 @@
 # Views for the project and application that don't require models
 #
 # Author:   Benjamin Bengfort <benjamin@bengfort.com>
-# Created:  Sun Jun 01 17:55:52 2014 -0400
+# Created:  Wed Apr 22 19:59:23 2015 -0400
 #
-# Copyright (C) 2014 Bengfort.com
+# Copyright (C) 2015 Bengfort.com
 # For license information, see LICENSE.txt
 #
 # ID: views.py [] benjamin@bengfort.com $
@@ -17,13 +17,20 @@ Views for the project and application that don't require models
 ## Imports
 ##########################################################################
 
+import stacks
+
+from datetime import datetime
 from django.shortcuts import redirect
-from member.mixins import MembershipRequired, is_member
+from users.mixins import MembershipRequired, is_member
 from django.views.generic import TemplateView
+
+from rest_framework import viewsets
+from rest_framework.response import Response
 
 ##########################################################################
 ## Application Views
 ##########################################################################
+
 
 class SplashPage(TemplateView):
     """
@@ -45,6 +52,7 @@ class SplashPage(TemplateView):
             return redirect('profile', permanent=False)
         return super(SplashPage, self).dispatch(request, *args, **kwargs)
 
+
 class WebAppView(MembershipRequired, TemplateView):
     """
     Authenticated web application view that serves all context and content
@@ -52,3 +60,21 @@ class WebAppView(MembershipRequired, TemplateView):
     """
 
     template_name = "app/index.html"
+
+
+##########################################################################
+## API Views for this application
+##########################################################################
+
+
+class HeartbeatViewSet(viewsets.ViewSet):
+    """
+    Endpoint for heartbeat checking, including the status and version.
+    """
+
+    def list(self, request):
+        return Response({
+            "status": "ok",
+            "version": stacks.get_version(),
+            "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+        })
