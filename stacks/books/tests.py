@@ -91,7 +91,7 @@ class BookMediaModelTests(TestCase):
     Test the methods on the BookMedia model
     """
 
-    fixtures = ['books', 'groups', 'users', 'profiles', 'media']
+    fixtures = ['books', 'groups', 'users', 'media']
 
     def test_content_required(self):
         """
