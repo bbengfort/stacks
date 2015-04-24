@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/bbengfort/stacks.png?label=ready&title=Ready)](https://waffle.io/bbengfort/stacks)
 # Bengfort Stacks [![Build Status][build_img]][build_link] #
 
 **Personal eBook library for the Bengfort Family**
