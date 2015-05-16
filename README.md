@@ -1,7 +1,9 @@
 # Stacks
 **Personal eBook library for the Bengfort Family**
 
-[![Build Status][travis_img]][travis_href] [![Stories in Ready][waffle_img]][waffle_href]
+[![Build Status][travis_img]][travis_href]
+[![Coverage Status][coverage_img]][coverage_href]
+[![Stories in Ready][waffle_img]][waffle_href]
 
 [![My favorite book shop](docs/img/stacks.jpg)][stacks.jpg]
 
@@ -73,4 +75,6 @@ The image used in this README, &ldquo;[My favorite book shop][stacks.jpg]&rdquo;
 [travis_href]: https://travis-ci.org/bbengfort/stacks
 [waffle_img]: https://badge.waffle.io/bbengfort/stacks.png?label=ready&title=Ready
 [waffle_href]: https://waffle.io/bbengfort/stacks
+[coverage_href]: https://coveralls.io/r/bbengfort/stacks
+[coverage_img]: https://coveralls.io/repos/bbengfort/stacks/badge.svg?branch=develop
 [stacks.jpg]: https://flic.kr/p/daqcX7
