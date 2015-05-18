@@ -38,7 +38,6 @@
           {% endif %}
           <li id="userEmail"><i class="fa fa-envelope"></i> {{ user.email }}</li>
           <li id="userJoined"><i class="fa fa-clock-o"></i> Joined on {{ user.date_joined|date }}</li>
-          <li id="setPassword"><i class="fa fa-lock"></i> <a href="#" data-toggle="modal" data-target="#setPasswordModal">Change Password</a></li>
         </ul>
 
       </div><!-- image/profile sidebar ends -->
@@ -51,7 +50,7 @@
 
           <!-- edit profile button -->
           <button id="btnEditProfile" class="btn btn-default btn-sm pull-right"
-              disabled="disabled" data-toggle="modal" data-target="#editProfileForm">
+              data-toggle="modal" data-target="#editProfileModal">
             <i class="fa fa-pencil"></i> Edit Profile
           </button>
 
@@ -82,39 +81,15 @@
 
 {% block modals %}
   {{ block.super }}
-  <div id="setPasswordModal" class="modal fade" tabindex="-1"
-    role="dialog" aria-labelledby="setPasswordModal" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
 
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">Set Password</h4>
-          </div>
-          <div class="modal-body">
-            <form id="setPasswordForm" class="show">
-              <div class="form-group">
-                <input id="txtPassword" type="password" class="form-control" placeholder="Enter Password" />
-              </div>
-              <div class="form-group">
-                <input id="txtRepeated" type="password" class="form-control" placeholder="Confirm Password" />
-                <span id="passwordHelp" class="help-block"></span>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="reset" class="btn btn-default btn-sm" form="setPasswordForm" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary btn-sm" form="setPasswordForm">Submit</button>
-          </div>
+  <!-- CSRF for AJAX requests -->
+  {% csrf_token %}
 
-        </div> <!-- .modal-content -->
-      </div> <!-- .modal-dialog -->
-  </div> <!-- .modal -->
+  <!-- Profile editing Modal -->
+  {% include 'components/modals/edit-profile-modal.html' %}
 {% endblock %}
 
-{% block javascripts %}
+{% block javascript %}
   {{ block.super }}
 
   <script type="text/javascript">
@@ -125,19 +100,80 @@
             $.ajaxSetup({headers: {"X-CSRFToken": csrfToken}});
             console.log("profile application ready");
 
+            var profileForm  = $('#editProfileForm');
             var passwordForm = $('#setPasswordForm');
             var userDetail   = "{{ user.profile.get_api_detail_url }}";
 
-            // When setPasswordModal is closed - reset the setPasswordForm
-            $('#setPasswordModal').on('hidden.bs.modal', function (e) {
-              passwordForm.removeClass('has-error');
+            // When editProfileModal is closed - reset the forms
+            $('#editProfileModal').on('hidden.bs.modal', function (e) {
+
+              // Reset the profile form
+              profileForm.removeClass('has-error');
+              $("#profileHelp").text("");
+              profileForm[0].reset();
+
+              // Reset the password form
+              passwordForm
+                .removeClass('has-error')
+                .removeClass('has-success');
               $('#passwordHelp').text("");
-              $('#setPasswordForm')[0].reset();
+              passwordForm[0].reset();
+            });
+
+            // When the editProfileModal submit button is pressed ...
+            $('#btnSubmitEditProfile').click(function(e) {
+              e.preventDefault();
+
+              var form = $('#editProfileModal .in form');
+              form.trigger('submit');
+
+              return false;
+            });
+
+            // Handle editProfileForm submission
+            profileForm.submit(function(e) {
+              console.log("Handling Submit Profile Form");
+              e.preventDefault();
+
+              // Get form data
+              var formdata = _.object(_.map(profileForm.serializeArray(), function(obj) {
+                  if (obj.value) {
+                    return [obj.name, obj.value];
+                  } else {
+                    return [obj.name, $("input[name=" + obj.name + "]").attr("placeholder")];
+                  }
+              }));
+
+              // Convert to expected JSON representation
+              var data = _.pick(formdata, 'first_name', 'last_name', 'email');
+              data.profile = _.pick(formdata, 'location', 'biography');
+
+              // POST the changed biography data
+              $.ajax({
+                url: userDetail,
+                method: 'PUT',
+                data: JSON.stringify(data),
+                dataType: 'json',
+                contentType: 'application/json'
+              })
+                .success(function(result) {
+                  // Temporary
+                  window.location = "/profile/";
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                  console.log(textStatus, errorThrown);
+                  console.log(jqXHR);
+                  profileForm.addClass('has-error');
+                  $("#profileHelp").text("unable to update profile on the server!");
+                  console.log("TODO: Get specific errors from jqXHR");
+                });
+
+              return false;
             });
 
             // Handle setPasswordForm submission
             passwordForm.submit(function(e) {
-              console.log("Here");
+              console.log("Handling Submit Password!");
               e.preventDefault();
               // Get form data
               var data = {
@@ -156,9 +192,15 @@
               }
               // POST the change password data
               var passwordEndpoint = userDetail + "set_password/";
-              $.post(passwordEndpoint, data, function(result) {
-                $("#setPasswordModal").modal('hide');
-              });
+              $.post(passwordEndpoint, data)
+                .success(function(result) {
+                  passwordForm.addClass('has-success')
+                  $('#passwordHelp').text("password successfully changed!");
+                })
+                .fail(function(result) {
+                  passwordForm.addClass('has-error');
+                  $('#passwordHelp').text("could not reset password - server error");
+                });
 
               return false;
             });

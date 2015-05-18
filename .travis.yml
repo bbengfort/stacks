@@ -9,6 +9,8 @@ before_script:
 
 script: make test
 
+after_success: coveralls
+
 env:
   global:
     - DJANGO_SETTINGS_MODULE=stacks.settings.testing
