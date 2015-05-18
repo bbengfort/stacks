@@ -53,7 +53,7 @@ class AbsoluteImageField(serializers.ImageField):
 ##########################################################################
 
 
-class MarkdownField(serializers.WritableField):
+class MarkdownField(serializers.Field):
 
     def to_native(self, obj):
         return unicode(obj)

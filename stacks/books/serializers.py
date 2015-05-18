@@ -56,8 +56,8 @@ class BookMediaSerializer(serializers.ModelSerializer):
     download data for a piece of media for a book.
     """
 
-    book       = serializers.RelatedField(many=False)
-    uploader   = serializers.RelatedField(many=False)
+    book       = serializers.HyperlinkedRelatedField(view_name='api:book-detail', read_only=True)
+    uploader   = serializers.HyperlinkedRelatedField(view_name='api:user-detail', read_only=True)
     content    = AbsoluteFileField()
 
     class Meta:
@@ -88,7 +88,7 @@ class BookSerializer(serializers.ModelSerializer):
     publisher   = PublisherSerializer(many=False)
     media       = SimpleBookMediaSerializer(many=True)
     cover       = AbsoluteImageField()
-    tags        = serializers.RelatedField(many=True)
+    tags        = serializers.StringRelatedField(many=True)
     description = MarkdownField()
 
     class Meta:

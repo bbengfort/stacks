@@ -23,6 +23,7 @@ env:
     - EMAIL_HOST_PASSWORD=''
     - GOOGLE_OAUTH2_CLIENT_ID=''
     - GOOGLE_OAUTH2_CLIENT_SECRET=''
+    - GOOGLE_BOOKS_API_KEY=''
 
 notifications:
   email:

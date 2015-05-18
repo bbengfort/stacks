@@ -27,6 +27,7 @@ from stacks.views import SplashPage, WebAppView
 from rest_framework import routers
 from users.views import UserViewSet
 from stacks.views import HeartbeatViewSet
+from books.views import GoogleBooksSearch
 
 ##########################################################################
 ## Endpoint Discovery
@@ -36,6 +37,7 @@ from stacks.views import HeartbeatViewSet
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'status', HeartbeatViewSet, "status")
+router.register(r'gbs', GoogleBooksSearch, "gbs")
 
 #############################################################################
 ## The URL Patterns for the app

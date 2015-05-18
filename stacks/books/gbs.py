@@ -134,7 +134,10 @@ class GoogleBooks(object):
 
     ENDPOINT = "https://www.googleapis.com/books/v1/volumes"
 
-    def __init__(self, **kwargs):
+    def __init__(self, apikey=None, **kwargs):
+
+        # add in the API key
+        self.apikey = apikey
 
         # add any additional parameters to query or orverride defaults:
         for (k, v) in kwargs.iteritems():
@@ -209,6 +212,11 @@ class GoogleBooks(object):
         Returns a dictionary of the parameters that must be added to the
         query.
         """
+        if self.apikey:
+            return {
+                "key": self.apikey,
+            }
+
         return {}
 
     def execute(self, params):
@@ -279,8 +287,9 @@ class BookDict(object):
         will be helpful
         Note: Currently yields full name strings.
         """
-        for author in self['authors']:
-            yield author
+        if self['authors']:
+            for author in self['authors']:
+                yield author
 
     @property
     def publisher(self):
@@ -341,6 +350,9 @@ class BookDict(object):
         with the Google specific identifier.
         TODO: Strip weirdness out of URL
         """
+        if not self["imageLinks"]:
+            return None
+
         sizes = ("thumbnail", "smallThumbnail")
         for size in sizes:
             if size in self["imageLinks"]:
@@ -429,6 +441,7 @@ class BookDict(object):
             'pages':       self.pages,
             'description': self.description,
             'language':    self.language,
+            'thumbnail':   self.thumbnail_url,
         }
 
     def __getitem__(self, name):
