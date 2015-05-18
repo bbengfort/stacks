@@ -31,12 +31,10 @@ class ProfileSerializer(serializers.ModelSerializer):
     Serializes the Profile object to embed into the User JSON
     """
 
-    gravatar = serializers.CharField(read_only=True)
-    location = serializers.StringRelatedField()
-
     class Meta:
         model  = Profile
         fields = ('biography', 'gravatar', 'location')
+        read_only_fields = ('gravatar',)
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -44,14 +42,37 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     Serializes the User object for use in the API.
     """
 
-    profile = ProfileSerializer(many=False, read_only=True)
+    profile = ProfileSerializer(many=False, read_only=False)
 
     class Meta:
         model  = User
-        fields = ('url', 'username', 'first_name', 'last_name', 'profile')
+        fields = ('url', 'username', 'first_name', 'last_name', 'email', 'profile')
+        read_only_fields = ('username',)
         extra_kwargs = {
             'url': {'view_name': 'api:user-detail', }
         }
+
+    def update(self, instance, validated_data):
+        """
+        To support nested update on the Profile, we include this method to
+        automatically update the nested relation. Note that `create` is not
+        implemented, so the API cannot automatically create a profile (yet).
+        """
+        print validated_data
+        profile = validated_data.pop('profile')
+        print profile.items()
+
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        for attr, value in profile.items():
+            setattr(instance.profile, attr, value)
+
+
+        instance.profile.save()
+        instance.save()
+        return instance
 
 
 class PasswordSerializer(serializers.Serializer):
