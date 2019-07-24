@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/bbengfort/stacks"
+	"github.com/bbengfort/stacks/api"
 	"github.com/joho/godotenv"
 	"gopkg.in/urfave/cli.v1"
 )
@@ -16,7 +16,7 @@ func main() {
 	// Instantiate the command line application
 	app := cli.NewApp()
 	app.Name = "stacks"
-	app.Version = stacks.PackageVersion
+	app.Version = api.PackageVersion
 	app.Usage = "run and manage the stacks API server"
 
 	// Define commands available to the application
@@ -53,7 +53,7 @@ func main() {
 //===========================================================================
 
 func serve(c *cli.Context) (err error) {
-	if err := stacks.Serve(c.String("addr"), c.Bool("debug")); err != nil {
+	if err := api.Serve(c.String("addr"), c.Bool("debug")); err != nil {
 		return cli.NewExitError(err, 1)
 	}
 	return nil

@@ -1,10 +1,10 @@
-package stacks
+package api
 
 import (
 	"log"
 	"net/http"
 
-	"github.com/bbengfort/stacks/books"
+	"github.com/bbengfort/stacks/api/books"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
